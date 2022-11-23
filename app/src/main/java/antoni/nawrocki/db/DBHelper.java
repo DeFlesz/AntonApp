@@ -7,6 +7,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import antoni.nawrocki.models.CourseModel;
+import antoni.nawrocki.models.CourseOption;
+import antoni.nawrocki.models.OrderModel;
+import antoni.nawrocki.models.UserModel;
+
 public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "AntonCerts.db";
@@ -41,23 +46,63 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVer, newVer);
     }
 
+    //remove price it will be counted later
+    public void createOrder(OrderModel order, long userID, long courseID, long[] selectedOptionsIDs){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues orderValues = new ContentValues();
+        orderValues.put(Orders.COLUMN_NAME_AMOUNT, order.getAmount());
+        orderValues.put(Orders.COLUMN_NAME_DATE, order.getDate().toString());
+        orderValues.put(Orders.COLUMN_NAME_PRICE, order.getPrice());
+        orderValues.put(Orders.COLUMN_NAME_USER_ID, userID);
+        orderValues.put(Orders.COLUMN_NAME_COURSE_ID, courseID);
+
+        long orderID = db.insert(Orders.TABLE_NAME, null, orderValues);
+
+        for (long optionID :
+                selectedOptionsIDs) {
+            ContentValues orderOptionValues = new ContentValues();
+            orderOptionValues.put(OrdersOptions.COLUMN_NAME_ORDER_ID, orderID);
+            orderOptionValues.put(OrdersOptions.COLUMN_NAME_OPTION_ID, optionID);
+            db.insert(OrdersOptions.TABLE_NAME, null, orderOptionValues);
+        }
+    }
+
+    public void createCourse(CourseModel courseModel, CourseOption[] courseOptions) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues courseValues = new ContentValues();
+        courseValues.put(Courses.COLUMN_NAME_TITLE, courseModel.getTitle());
+        courseValues.put(Courses.COLUMN_NAME_DESCRIPTION, courseModel.getDescription());
+        courseValues.put(Courses.COLUMN_NAME_THUMBNAIL, courseModel.getThumbnail());
+        courseValues.put(Courses.COLUMN_NAME_PRICE, courseModel.getPrice());
+        courseValues.put(Courses.COLUMN_NAME_CREATOR_ID, courseModel.getUserID());
+
+        long courseID = db.insert(Courses.TABLE_NAME, null, courseValues);
+
+        for (CourseOption courseOption :
+                courseOptions) {
+            ContentValues optionValues = new ContentValues();
+            optionValues.put(CoursesOptions.COLUMN_NAME_COURSE_ID, courseID);
+            optionValues.put(CoursesOptions.COLUMN_NAME_TITLE, courseOption.getTitle());
+            optionValues.put(CoursesOptions.COLUMN_NAME_DESCRIPTION, courseOption.getDescription());
+            optionValues.put(CoursesOptions.COLUMN_NAME_PRICE, courseOption.getPrice());
+            db.insert(CoursesOptions.TABLE_NAME, null, optionValues);
+        }
+    }
+
     public void createUser(
-            String username,
-            String login,
-            String password,
-            boolean isAdmin,
-            boolean isCompany,
-            String profilePicture
+            UserModel user
     ) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Users.COLUMN_NAME_USERNAME, username);
-        values.put(Users.COLUMN_NAME_LOGIN, login);
-        values.put(Users.COLUMN_NAME_PASSWORD, password);
-        values.put(Users.COLUMN_NAME_IS_ADMIN, isAdmin);
-        values.put(Users.COLUMN_NAME_IS_COMPANY, isCompany);
-        values.put(Users.COLUMN_NAME_PROFILE_PICTURE, profilePicture);
+        values.put(Users.COLUMN_NAME_USERNAME, user.getUsername());
+        values.put(Users.COLUMN_NAME_LOGIN, user.getLogin());
+        values.put(Users.COLUMN_NAME_PASSWORD, user.getPassword());
+        values.put(Users.COLUMN_NAME_IS_ADMIN, user.isAdmin());
+        values.put(Users.COLUMN_NAME_IS_COMPANY, user.isCompany());
+        values.put(Users.COLUMN_NAME_PROFILE_PICTURE, user.getProfilePicture());
 
         db.insert(Users.TABLE_NAME, null, values);
     }

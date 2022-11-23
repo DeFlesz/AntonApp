@@ -4,7 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import java.sql.Date;
+import java.sql.Time;
+
 import antoni.nawrocki.db.DBHelper;
+import antoni.nawrocki.models.CourseModel;
+import antoni.nawrocki.models.CourseOption;
+import antoni.nawrocki.models.OrderModel;
+import antoni.nawrocki.models.UserModel;
 
 public class MainActivity extends AppCompatActivity {
     DBHelper dbHelper;
@@ -15,6 +22,75 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dbHelper = new DBHelper(this);
+
+    }
+
+    public void setUpDB() {
+        dbHelper.createUser(
+                new UserModel(
+                        "Anton Nawarocki",
+                        "admin",
+                        "1234",
+                        true,
+                        false,
+                        ""
+                )
+        );
+        dbHelper.createUser(
+                new UserModel(
+                        "Tacos z Sosem",
+                        "tacos",
+                        "1234",
+                        false,
+                        false,
+                        ""
+                )
+        );
+        dbHelper.createUser(
+                new UserModel(
+                        "Super Firma Gruz",
+                        "gruz",
+                        "1234",
+                        false,
+                        true,
+                        ""
+                )
+        );
+        dbHelper.createCourse(
+                new CourseModel(
+                        "Jak opowiedzieć żart",
+                        "W tym kursie zaprezentuje jak opowiadać żarty",
+                        "",
+                        1,
+                        40
+                ),
+                new CourseOption[]{
+                        new CourseOption(
+                                "Anton-żarty dodatek",
+                                "Anton żarty ostatnio cieszą się większą popularnością",
+                                20
+                        ),
+                        new CourseOption(
+                                "inglisz",
+                                "żarty o najpopularniejszym języku na świecie",
+                                60
+                        )
+                }
+        );
+
+        dbHelper.createOrder(
+                new OrderModel(
+                        10,
+                        new Date(2022, 12, 30),
+                        300
+                ),
+                1,
+                1,
+                new long[] {
+                        1, 2
+                }
+        );
+
     }
 
 //    @Override

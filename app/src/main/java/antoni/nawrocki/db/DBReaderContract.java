@@ -10,6 +10,7 @@ public final class DBReaderContract {
         public static final String TABLE_NAME = "courses";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_THUMBNAIL = "thumbnail";
         public static final String COLUMN_NAME_CREATOR_ID = "creator_id";
         public static final String COLUMN_NAME_PRICE = "price";
     }
@@ -38,8 +39,7 @@ public final class DBReaderContract {
         public static final String COLUMN_NAME_DATE = "order_date";
         public static final String COLUMN_NAME_PRICE = "price";
         public static final String COLUMN_NAME_USER_ID = "user_id";
-        public static final String COLUMN_NAME_COURSE_ID = "order_id";
-        public static final String COLUMN_NAME_ORDERS_OPTIONS_ID = "order_options_id";
+        public static final String COLUMN_NAME_COURSE_ID = "course_id";
     }
 
     // As I don't want any duplicates in Options just to save them occasionally for the orders,
@@ -58,6 +58,7 @@ public final class DBReaderContract {
                     Courses._ID + " INTEGER PRIMARY KEY," +
                     Courses.COLUMN_NAME_TITLE + " TEXT," +
                     Courses.COLUMN_NAME_DESCRIPTION + " TEXT," +
+                    Courses.COLUMN_NAME_THUMBNAIL + " TEXT," +
                     Courses.COLUMN_NAME_CREATOR_ID + " INTEGER," +
                     Courses.COLUMN_NAME_PRICE + " REAL);";
 
@@ -69,8 +70,7 @@ public final class DBReaderContract {
                 Orders.COLUMN_NAME_DATE + " DATETIME," +
                 Orders.COLUMN_NAME_PRICE + " REAL," +
                 Orders.COLUMN_NAME_USER_ID + " INTEGER," +
-                Orders.COLUMN_NAME_COURSE_ID + " INTEGER," +
-                Orders.COLUMN_NAME_ORDERS_OPTIONS_ID + " INTEGER);";
+                Orders.COLUMN_NAME_COURSE_ID + " INTEGER);";
     public static final String CREATE_TABLE_COURSES_OPTIONS =
             "CREATE TABLE " + CoursesOptions.TABLE_NAME + " (" +
                 CoursesOptions._ID + " INTEGER PRIMARY KEY," +
@@ -81,7 +81,6 @@ public final class DBReaderContract {
 
     public static final String CREATE_TABLE_ORDERS_OPTIONS =
             "CREATE TABLE " + OrdersOptions.TABLE_NAME + " (" +
-                OrdersOptions._ID + " INTEGER PRIMARY KEY," +
                 OrdersOptions.COLUMN_NAME_ORDER_ID + " INTEGER," +
                 OrdersOptions.COLUMN_NAME_OPTION_ID + " INTEGER);";
 
