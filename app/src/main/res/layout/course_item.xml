@@ -13,8 +13,9 @@
         >
 
         <ImageView
+            android:id="@+id/course_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="194dp"
+            android:layout_height="80dp"
             android:src="@drawable/ic_launcher_background"
             android:scaleType="centerCrop"/>
 
@@ -26,26 +27,28 @@
 
             <!-- Title, secondary and supporting text -->
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/course_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tytuł"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/black"
+                android:textSize="24sp"
                 />
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/course_price"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="drugi text"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?android:attr/textColorSecondary"
+                android:text="cena podstawowa: 18.99 zł"
+                android:textColor="@color/black"
                 />
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/course_description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="pierwszy tekst"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?android:attr/textColorSecondary"
+                android:text="opis..."
+                android:textColor="@color/black"
                 />
 
         </LinearLayout>

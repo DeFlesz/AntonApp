@@ -1,6 +1,10 @@
 package antoni.nawrocki;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainer;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
@@ -8,6 +12,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 import antoni.nawrocki.db.DBHelper;
+import antoni.nawrocki.fragments.CourseList;
 import antoni.nawrocki.models.CourseModel;
 import antoni.nawrocki.models.CourseOption;
 import antoni.nawrocki.models.OrderModel;
@@ -15,6 +20,7 @@ import antoni.nawrocki.models.UserModel;
 
 public class MainActivity extends AppCompatActivity {
     DBHelper dbHelper;
+    FragmentContainerView fragmentContainerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dbHelper = new DBHelper(this);
+        fragmentContainerView = findViewById(R.id.fragment_container);
+
+//        FragmentManager fm = getSupportFragmentManager();
+//        fm.beginTransaction()
+//                .add(R.id.fragment_container, CourseList)
+
 
     }
 

@@ -4,8 +4,12 @@ import static antoni.nawrocki.db.DBReaderContract.*;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import antoni.nawrocki.models.CourseModel;
 import antoni.nawrocki.models.CourseOption;
@@ -105,6 +109,43 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Users.COLUMN_NAME_PROFILE_PICTURE, user.getProfilePicture());
 
         db.insert(Users.TABLE_NAME, null, values);
+    }
+
+    public ArrayList<HashMap<String, String>> getCourses() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
+
+        String[] projection = {
+                Courses._ID,
+                Courses.COLUMN_NAME_TITLE,
+                Courses.COLUMN_NAME_DESCRIPTION,
+                Courses.COLUMN_NAME_PRICE,
+        };
+
+        String sortOrder = Courses.COLUMN_NAME_PRICE + " ASC";
+
+        Cursor cursor = db.query(
+                Courses.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+
+        while (cursor.moveToNext()){
+            HashMap<String, String> course = new HashMap<>();
+
+            course.put(Courses._ID, cursor.getString(cursor.getColumnIndexOrThrow(Courses._ID)));
+            course.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
+            course.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
+            course.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
+
+            queryResult.add(course);
+        }
+
+        return queryResult;
     }
 
     // TODO
