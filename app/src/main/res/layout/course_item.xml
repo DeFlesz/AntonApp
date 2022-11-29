@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:layout_margin="6dp">
 
     <LinearLayout
@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/course_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_launcher_background"
             android:scaleType="centerCrop"/>
 
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="4dp">
 
             <!-- Title, secondary and supporting text -->
             <TextView
@@ -32,23 +32,25 @@
                 android:layout_height="wrap_content"
                 android:text="Tytuł"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 />
             <TextView
                 android:id="@+id/course_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="cena podstawowa: 18.99 zł"
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 />
             <TextView
                 android:id="@+id/course_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="opis..."
                 android:textColor="@color/black"
+                android:textSize="10sp"
                 />
 
         </LinearLayout>

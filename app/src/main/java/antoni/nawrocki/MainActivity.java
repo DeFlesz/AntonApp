@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 //        FragmentManager fm = getSupportFragmentManager();
 //        fm.beginTransaction()
 //                .add(R.id.fragment_container, CourseList)
-
+//        setUpDB();
 
     }
 
@@ -105,7 +105,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    @Override
+    @Override
+    public void onBackPressed() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    //    @Override
 //    protected void onDestroy() {
 //        if (dbHelper != null) {
 //            dbHelper.close();

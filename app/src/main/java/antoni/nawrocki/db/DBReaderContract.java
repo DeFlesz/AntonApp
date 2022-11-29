@@ -71,6 +71,7 @@ public final class DBReaderContract {
                 Orders.COLUMN_NAME_PRICE + " REAL," +
                 Orders.COLUMN_NAME_USER_ID + " INTEGER," +
                 Orders.COLUMN_NAME_COURSE_ID + " INTEGER);";
+
     public static final String CREATE_TABLE_COURSES_OPTIONS =
             "CREATE TABLE " + CoursesOptions.TABLE_NAME + " (" +
                 CoursesOptions._ID + " INTEGER PRIMARY KEY," +

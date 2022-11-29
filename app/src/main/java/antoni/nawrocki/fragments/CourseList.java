@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import antoni.nawrocki.R;
+import antoni.nawrocki.adapters.CoursesAdapter;
+import antoni.nawrocki.db.DBHelper;
 
 
 public class CourseList extends Fragment {
@@ -32,7 +34,8 @@ public class CourseList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.course_recycler);
 
-
+        CoursesAdapter coursesAdapter = new CoursesAdapter(new DBHelper(getContext()).getCourses(), getActivity());
+        recyclerView.setAdapter(coursesAdapter);
     }
 
     @Override

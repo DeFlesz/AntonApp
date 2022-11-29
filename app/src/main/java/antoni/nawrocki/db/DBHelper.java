@@ -20,8 +20,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "AntonCerts.db";
 
-
-
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -111,6 +109,77 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(Users.TABLE_NAME, null, values);
     }
 
+    public HashMap<String, Object> getCourse(long courseID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        HashMap<String, Object> courseData = new HashMap<>();
+
+        String[] projection = {
+                Courses.COLUMN_NAME_TITLE,
+                Courses.COLUMN_NAME_DESCRIPTION,
+                Courses.COLUMN_NAME_PRICE,
+        };
+
+        String selection = Courses._ID + " = ?";
+        String[] selectionArgs = {courseID + ""};
+
+        Cursor cursor = db.query(
+                Courses.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToNext();
+        courseData.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
+        courseData.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
+        courseData.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
+
+        // Options retrieval
+        projection = new String[] {
+                CoursesOptions._ID,
+                CoursesOptions.COLUMN_NAME_TITLE,
+                CoursesOptions.COLUMN_NAME_DESCRIPTION,
+                CoursesOptions.COLUMN_NAME_PRICE,
+                CoursesOptions.COLUMN_NAME_COURSE_ID
+        };
+
+        selection = CoursesOptions.COLUMN_NAME_COURSE_ID + " = ?";
+        selectionArgs = new String[] {courseID + ""};
+
+        String sortOrder = CoursesOptions.COLUMN_NAME_PRICE + " ASC";
+
+        cursor = db.query(
+                CoursesOptions.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        ArrayList<HashMap<String, String>> options = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            HashMap<String, String> course = new HashMap<>();
+
+            course.put(CoursesOptions._ID, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions._ID)));
+            course.put(CoursesOptions.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE)));
+            course.put(CoursesOptions.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION)));
+            course.put(CoursesOptions.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_PRICE)));
+
+            options.add(course);
+        }
+
+        courseData.put("options", options);
+
+        cursor.close();
+        return courseData;
+    }
+
     public ArrayList<HashMap<String, String>> getCourses() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
@@ -145,6 +214,7 @@ public class DBHelper extends SQLiteOpenHelper {
             queryResult.add(course);
         }
 
+        cursor.close();
         return queryResult;
     }
 

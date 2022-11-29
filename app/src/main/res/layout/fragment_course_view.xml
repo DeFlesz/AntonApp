@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.CourseView">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:layout_margin="16dp"
+        android:id="@+id/course_view_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher_background"
+        android:scaleType="centerCrop"
+        />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/linear_layout_course_view"
+        android:layout_below="@id/course_view_thumbnail"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/course_view_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:textColor="@color/black"
+        android:text="Tytuł kursu" />
+
+        <TextView
+            android:id="@+id/course_view_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="Bardzo długi i wyczerpujący opis, na który składa się wiele paragrafów oraz innych tego typu..." />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/course_view_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/course_view_recycler"
+        android:layout_below="@+id/linear_layout_course_view"
+        android:layout_alignStart="@id/linear_layout_course_view"
+        android:layout_toStartOf="@+id/course_view_buy_button"
+        android:gravity="center_vertical"
+        android:text="Cena: " />
+
+    <Button
+        android:layout_alignEnd="@id/linear_layout_course_view"
+        android:layout_below="@id/linear_layout_course_view"
+        android:id="@+id/course_view_buy_button"
+        android:text="Zamów kurs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/course_view_recycler"
+        android:layout_margin="16dp"
+        android:layout_below="@+id/course_view_buy_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+</RelativeLayout>
