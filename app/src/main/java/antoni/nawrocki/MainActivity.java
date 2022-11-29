@@ -33,11 +33,15 @@ public class MainActivity extends AppCompatActivity {
 //        FragmentManager fm = getSupportFragmentManager();
 //        fm.beginTransaction()
 //                .add(R.id.fragment_container, CourseList)
-//        setUpDB();
+        setUpDB();
 
     }
 
     public void setUpDB() {
+        if (dbHelper.getCourses().size() != 0) {
+            return;
+        }
+
         dbHelper.createUser(
                 new UserModel(
                         "Anton Nawarocki",
@@ -90,18 +94,67 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        dbHelper.createOrder(
-                new OrderModel(
-                        10,
-                        new Date(2022, 12, 30),
-                        300
+        dbHelper.createCourse(
+                new CourseModel(
+                        "Kurs Vue z [Redacted]",
+                        "W tym kursie zaprezentuje podstawy vue",
+                        "",
+                        1,
+                        40
                 ),
-                1,
-                1,
-                new long[] {
-                        1, 2
+                new CourseOption[]{
+                        new CourseOption(
+                                "Routing",
+                                "w tym dodatku przedstawię ci jak korzystać z routingu",
+                                20
+                        ),
+                        new CourseOption(
+                                "Nuxt",
+                                "podstawy i wprowadzenie do nuxt.js",
+                                180
+                        ),
+                        new CourseOption(
+                                "UX design",
+                                "podstawy UX",
+                                60
+                        )
                 }
         );
+
+        dbHelper.createCourse(
+                new CourseModel(
+                        "Javunia z kawunią",
+                        "Lubisz kawę? To na pewno polubisz, też jave!",
+                        "",
+                        1,
+                        120
+                ),
+                new CourseOption[]{
+                        new CourseOption(
+                                "JVM - podstawy działania",
+                                "warto wiedzieć jak będzie zachowywał się kod podczas emulacji",
+                                20
+                        ),
+                        new CourseOption(
+                                "javac",
+                                "wszystko o kompilatorze javy",
+                                60
+                        )
+                }
+        );
+
+//        dbHelper.createOrder(
+//                new OrderModel(
+//                        10,
+//                        new Date(2022, 12, 30),
+//                        300
+//                ),
+//                1,
+//                1,
+//                new long[] {
+//                        1, 2
+//                }
+//        );
 
     }
 

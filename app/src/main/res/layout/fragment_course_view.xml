@@ -42,15 +42,27 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/course_view_price"
+        android:id="@+id/course_view_price_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/course_view_recycler"
         android:layout_below="@+id/linear_layout_course_view"
         android:layout_alignStart="@id/linear_layout_course_view"
-        android:layout_toStartOf="@+id/course_view_buy_button"
         android:gravity="center_vertical"
         android:text="Cena: " />
+
+    <TextView
+        android:padding="4dp"
+        android:id="@+id/course_view_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/course_view_recycler"
+        android:layout_below="@+id/linear_layout_course_view"
+        android:layout_toStartOf="@+id/course_view_buy_button"
+        android:layout_toLeftOf="@id/course_view_price_header"
+        android:layout_toEndOf="@+id/course_view_price_header"
+        android:gravity="center_vertical"
+        android:text="12" />
 
     <Button
         android:layout_alignEnd="@id/linear_layout_course_view"

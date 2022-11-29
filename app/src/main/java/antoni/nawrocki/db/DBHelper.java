@@ -109,9 +109,50 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(Users.TABLE_NAME, null, values);
     }
 
-    public HashMap<String, Object> getCourse(long courseID) {
+    public ArrayList<HashMap<String, String>> getOptions(long courseID) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] projection = new String[] {
+                CoursesOptions._ID,
+                CoursesOptions.COLUMN_NAME_TITLE,
+                CoursesOptions.COLUMN_NAME_DESCRIPTION,
+                CoursesOptions.COLUMN_NAME_PRICE,
+                CoursesOptions.COLUMN_NAME_COURSE_ID
+        };
+
+        String selection = CoursesOptions.COLUMN_NAME_COURSE_ID + " = ?";
+        String[] selectionArgs = new String[] {courseID + ""};
+
+        String sortOrder = CoursesOptions.COLUMN_NAME_PRICE + " ASC";
+
+        Cursor cursor = db.query(
+                CoursesOptions.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        ArrayList<HashMap<String, String>> options = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            HashMap<String, String> course = new HashMap<>();
+
+            course.put(CoursesOptions._ID, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions._ID)));
+            course.put(CoursesOptions.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE)));
+            course.put(CoursesOptions.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION)));
+            course.put(CoursesOptions.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_PRICE)));
+
+            options.add(course);
+        }
+
+        return options;
+    }
+
+    public HashMap<String, String> getCourse(long courseID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        HashMap<String, Object> courseData = new HashMap<>();
+        HashMap<String, String> courseData = new HashMap<>();
 
         String[] projection = {
                 Courses.COLUMN_NAME_TITLE,
@@ -136,45 +177,6 @@ public class DBHelper extends SQLiteOpenHelper {
         courseData.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
         courseData.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
         courseData.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
-
-        // Options retrieval
-        projection = new String[] {
-                CoursesOptions._ID,
-                CoursesOptions.COLUMN_NAME_TITLE,
-                CoursesOptions.COLUMN_NAME_DESCRIPTION,
-                CoursesOptions.COLUMN_NAME_PRICE,
-                CoursesOptions.COLUMN_NAME_COURSE_ID
-        };
-
-        selection = CoursesOptions.COLUMN_NAME_COURSE_ID + " = ?";
-        selectionArgs = new String[] {courseID + ""};
-
-        String sortOrder = CoursesOptions.COLUMN_NAME_PRICE + " ASC";
-
-        cursor = db.query(
-                CoursesOptions.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
-
-        ArrayList<HashMap<String, String>> options = new ArrayList<>();
-
-        while (cursor.moveToNext()){
-            HashMap<String, String> course = new HashMap<>();
-
-            course.put(CoursesOptions._ID, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions._ID)));
-            course.put(CoursesOptions.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE)));
-            course.put(CoursesOptions.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION)));
-            course.put(CoursesOptions.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_PRICE)));
-
-            options.add(course);
-        }
-
-        courseData.put("options", options);
 
         cursor.close();
         return courseData;

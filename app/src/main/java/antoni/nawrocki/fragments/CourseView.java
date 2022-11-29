@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,15 +64,22 @@ public class CourseView extends Fragment {
         orderButton = view.findViewById(R.id.course_view_buy_button);
         recyclerView = view.findViewById(R.id.course_view_recycler);
 
-        HashMap<String, Object> courseData = new DBHelper(getContext()).getCourse(Long.parseLong(courseID));
+        HashMap<String, String> courseData = new DBHelper(getContext()).getCourse(Long.parseLong(courseID));
+        ArrayList<HashMap<String, String>> options = new DBHelper(getContext()).getOptions(Long.parseLong(courseID));
 
-        title.setText((String) courseData.get(CoursesOptions.COLUMN_NAME_TITLE));
-        description.setText((String) courseData.get(CoursesOptions.COLUMN_NAME_DESCRIPTION));
-        price.setText("Cena: " + courseData.get(CoursesOptions.COLUMN_NAME_PRICE));
+        title.setText(courseData.get(CoursesOptions.COLUMN_NAME_TITLE));
+        description.setText(courseData.get(CoursesOptions.COLUMN_NAME_DESCRIPTION));
+        price.setText(courseData.get(CoursesOptions.COLUMN_NAME_PRICE));
+        double basePrice = Long.parseLong(courseData.get(CoursesOptions.COLUMN_NAME_PRICE));
 
-        OptionsAdapter optionsAdapter = new OptionsAdapter((ArrayList<HashMap<String, String>>) courseData.get("options"));
+        OptionsAdapter optionsAdapter = new OptionsAdapter(options, price, basePrice);
         recyclerView.setAdapter(optionsAdapter);
 
+        orderButton.setOnClickListener(v -> {
+            double finalPrice = optionsAdapter.getFinalPrice();
+            ArrayList<String> selectedOptionIDs = optionsAdapter.getSelectedOptionIDs();
+            Toast.makeText(getContext(), "ID kursu:" + courseID + ", ID opcji: " + selectedOptionIDs.toString() + ", Cena:" + finalPrice, Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
