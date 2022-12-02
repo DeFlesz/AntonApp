@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.CourseView">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ImageView
-        android:layout_margin="16dp"
         android:id="@+id/course_view_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -21,9 +24,11 @@
         android:layout_marginHorizontal="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
 
     <TextView
+        android:layout_marginTop="16dp"
         android:id="@+id/course_view_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +54,9 @@
         android:layout_below="@+id/linear_layout_course_view"
         android:layout_alignStart="@id/linear_layout_course_view"
         android:gravity="center_vertical"
-        android:text="Cena: " />
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="Cena:" />
 
     <TextView
         android:padding="4dp"
@@ -62,6 +69,8 @@
         android:layout_toLeftOf="@id/course_view_price_header"
         android:layout_toEndOf="@+id/course_view_price_header"
         android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         android:text="12" />
 
     <Button
@@ -75,12 +84,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/course_view_recycler"
-        android:layout_margin="16dp"
-        android:layout_below="@+id/course_view_buy_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/course_view_buy_button"
+        android:layout_alignEnd="@id/linear_layout_course_view"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

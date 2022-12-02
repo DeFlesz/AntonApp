@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.Register"
+    android:layout_gravity="center"
+    >
+
+    <TextView
+        android:text="Rejestracja"
+        android:layout_above="@id/register_scroll_view"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="32sp"/>
+
+    <ScrollView
+        android:id="@+id/register_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/register_linear_layout"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:labelFor="@id/register_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nazwa użytkownika: "
+            android:textColor="@color/black"
+            />
+        <EditText
+            android:id="@+id/register_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            />
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:labelFor="@id/register_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login: "
+            android:textColor="@color/black"
+            />
+        <EditText
+            android:id="@+id/register_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            />
+
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:labelFor="@id/register_password1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hasło: "
+            android:textColor="@color/black"
+            />
+        <EditText
+            android:id="@+id/register_password1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:labelFor="@id/register_password2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Powtórz hasło: "
+            android:textColor="@color/black"
+            />
+        <EditText
+            android:id="@+id/register_password2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+
+        <CheckBox
+            android:id="@+id/register_is_company_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jesteś firmą?"
+            />
+
+        <TextView
+            android:id="@+id/register_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            />
+
+    </LinearLayout>
+            <Button
+                android:id="@+id/register_button"
+                android:layout_below="@id/register_linear_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zarejestruj się"
+                />
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>
