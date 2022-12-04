@@ -48,6 +48,86 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVer, newVer);
     }
 
+    public boolean registerUser(String username, String login, String password, boolean isCompany){
+        if (getUser(login) != null) {
+            return false;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues userValues = new ContentValues();
+        userValues.put(Users.COLUMN_NAME_IS_ADMIN, false);
+        userValues.put(Users.COLUMN_NAME_IS_COMPANY, isCompany);
+        // profile picture to be added later
+        userValues.put(Users.COLUMN_NAME_PROFILE_PICTURE, "");
+        userValues.put(Users.COLUMN_NAME_PASSWORD, password);
+        userValues.put(Users.COLUMN_NAME_LOGIN, login);
+        userValues.put(Users.COLUMN_NAME_USERNAME, username);
+
+        db.insert(Users.TABLE_NAME,null, userValues);
+        return true;
+    }
+
+    public boolean loginUser(String login, String password1){
+        if (getUser(login) == null) {
+            return false;
+        }
+
+        HashMap<String, String> userData = getUser(login);
+
+        if (userData == null) {
+            return false;
+        }
+
+        String password2 = userData.get(Users.COLUMN_NAME_PASSWORD);
+
+        if (password1 != password2) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public HashMap<String, String> getUser(String login) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        HashMap<String, String> userData = new HashMap<>();
+
+        String[] projection = {
+                Users.COLUMN_NAME_LOGIN,
+                Users.COLUMN_NAME_PASSWORD
+        };
+
+        String selection = Users._ID + " = ?";
+        String[] selectionArgs = {login};
+
+        Cursor cursor = db.query(
+                Users.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToNext();
+        // hopefully that will fix cursor 0 size data exception :)
+        if (cursor.getCount() < 1) {
+            return null;
+        }
+        userData.put(Users.COLUMN_NAME_LOGIN, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_LOGIN)));
+        userData.put(Users.COLUMN_NAME_PASSWORD, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PASSWORD)));
+
+        cursor.close();
+
+        if (userData.size() != 1) {
+            return null;
+        }
+
+        return userData;
+    }
+
     //remove price it will be counted later
     public void createOrder(OrderModel order, long userID, long courseID, long[] selectedOptionsIDs){
         SQLiteDatabase db = this.getWritableDatabase();

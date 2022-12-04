@@ -12,15 +12,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import antoni.nawrocki.R;
+import antoni.nawrocki.db.DBHelper;
 
 public class Register extends Fragment {
     EditText usernameInput;
     EditText loginInput;
     EditText passwordInput;
     EditText confirmPasswordInput;
+
+    TextView validationText;
+
     CheckBox isCompanyCheckbox;
     Button registerButton;
 
@@ -63,22 +71,80 @@ public class Register extends Fragment {
         confirmPasswordInput = view.findViewById(R.id.register_password2);
         isCompanyCheckbox = view.findViewById(R.id.register_is_company_checkbox);
         registerButton = view.findViewById(R.id.register_button);
+        validationText = view.findViewById(R.id.register_text);
+
+        /*
+         TODO
+          [x] validation - passwords matching, correct username not to long, correct login
+          [] registering to database
+          [] validation in database
+          []? logging in immediately
+        */
+
 
         registerButton.setOnClickListener(l -> {
-            Toast.makeText(
-                    getContext(),
-                    "Username: " + usernameInput.getText() +
-                    ", Login: " + loginInput.getText() +
-                    (
-                        passwordInput.getText() == confirmPasswordInput.getText() ?
-                           "Passwords match: " + passwordInput.getText() :
-                           "Passwords don't match: [" + passwordInput.getText() +
-                           ", " + confirmPasswordInput.getText() + "]"
-                    ) +
-                    ", Firma?:" + (isCompanyCheckbox.isChecked() ? "Tak" : "Nie")
-                    ,
-                    Toast.LENGTH_SHORT
-            ).show();
+            validationText.setText("");
+            String password1 = passwordInput.getText().toString();
+            String password2 = confirmPasswordInput.getText().toString();
+            boolean passwordsMatching = password1.equals(password2);
+
+            if (!passwordsMatching) {
+                String validationString = validationText.getText().toString();
+                validationText.setText(validationString.isEmpty() ?
+                        "Hasła nie są takie same!" :
+                        validationString + ", Hasła nie są takie same!"
+                );
+            }
+
+            String login = loginInput.getText().toString();
+
+            Pattern pattern = Pattern.compile("\\s");
+            Matcher matcher = pattern.matcher(login);
+            boolean found = matcher.find();
+
+            if (found) {
+                String validationString = validationText.getText().toString();
+                validationText.setText(validationString.isEmpty() ?
+                        "Login nie może zawierać białych znaków!" :
+                        validationString + ", Login nie może zawierać białych znaków!"
+                );
+            }
+
+            if (!passwordsMatching || found) {
+                return;
+            }
+
+            validationText.setText("");
+
+            DBHelper dbHelper = new DBHelper(getContext());
+            boolean success = dbHelper.registerUser(
+                    usernameInput.getText().toString(),
+                    login,
+                    password1,
+                    isCompanyCheckbox.isChecked()
+            );
+            
+            if (success) {
+                Toast.makeText(getContext(), "Pomyślnie zarejestrowano użytkownika", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Toast.makeText(getContext(), "Nie udało się zarejestrować użytkownika", Toast.LENGTH_SHORT).show();
+
+//            Toast.makeText(
+//                    getContext(),
+//                    "Username: " + usernameInput.getText() +
+//                    ", Login: " + loginInput.getText() +
+//                    (
+//                        passwordInput.getText() == confirmPasswordInput.getText() ?
+//                           "Passwords match: " + passwordInput.getText() :
+//                           "Passwords don't match: [" + passwordInput.getText() +
+//                           ", " + confirmPasswordInput.getText() + "]"
+//                    ) +
+//                    ", Firma?:" + (isCompanyCheckbox.isChecked() ? "Tak" : "Nie")
+//                    ,
+//                    Toast.LENGTH_SHORT
+//            ).show();
         });
     }
 }
