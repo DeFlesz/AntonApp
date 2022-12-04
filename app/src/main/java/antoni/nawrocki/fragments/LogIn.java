@@ -11,13 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import antoni.nawrocki.R;
+import antoni.nawrocki.db.DBHelper;
 
 public class LogIn extends Fragment {
     EditText loginInput;
     EditText passwordInput;
+
+    TextView validationText;
+
     Button loginButton;
 
     public LogIn() {
@@ -56,13 +64,37 @@ public class LogIn extends Fragment {
         loginInput = view.findViewById(R.id.login_login);
         passwordInput = view.findViewById(R.id.login_password);
         loginButton = view.findViewById(R.id.login_button);
+        validationText = view.findViewById(R.id.login_text);
 
         loginButton.setOnClickListener(l -> {
-            Toast.makeText(
-                    getContext(),
-                    "Login: " + loginInput.getText() + ", Password: " + passwordInput.getText(),
-                    Toast.LENGTH_SHORT
-            ).show();
+            String login = loginInput.getText().toString();
+
+            Pattern pattern = Pattern.compile("\\s");
+            Matcher matcher = pattern.matcher(login);
+            boolean found = matcher.find();
+
+            if (found) {
+                validationText.setText("Login nie może zawierać białych znaków!");
+                return;
+            }
+
+            DBHelper dbHelper = new DBHelper(getContext());
+
+            boolean success = dbHelper.loginUser(login, passwordInput.getText().toString());
+
+            if (success) {
+                Toast.makeText(getContext(), "Pomyślnie zalogowano użytkownika!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Toast.makeText(getContext(), "Nie udało się zalogować użytkownika!", Toast.LENGTH_SHORT).show();
+
+
+//            Toast.makeText(
+//                    getContext(),
+//                    "Login: " + loginInput.getText() + ", Password: " + passwordInput.getText(),
+//                    Toast.LENGTH_SHORT
+//            ).show();
         });
     }
 }

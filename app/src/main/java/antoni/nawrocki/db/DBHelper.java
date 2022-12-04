@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,6 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public boolean loginUser(String login, String password1){
         if (getUser(login) == null) {
+
             return false;
         }
 
@@ -81,7 +83,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String password2 = userData.get(Users.COLUMN_NAME_PASSWORD);
 
-        if (password1 != password2) {
+        if (password2 == null) {
+            return false;
+        }
+
+        if (!password2.equals(password1)) {
+            Log.e("AN", "loginUser: " + password1 + " " + password2);
             return false;
         }
 
@@ -98,8 +105,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Users.COLUMN_NAME_PASSWORD
         };
 
-        String selection = Users._ID + " = ?";
-        String[] selectionArgs = {login};
+        String selection = Users.COLUMN_NAME_LOGIN + " = ?";
+        String[] selectionArgs = {login + ""};
 
         Cursor cursor = db.query(
                 Users.TABLE_NAME,
@@ -111,21 +118,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 null
         );
 
-        cursor.moveToNext();
         // hopefully that will fix cursor 0 size data exception :)
-        if (cursor.getCount() < 1) {
-            return null;
+        if (cursor != null && cursor.moveToFirst()) {
+            userData.put(Users.COLUMN_NAME_LOGIN, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_LOGIN)));
+            userData.put(Users.COLUMN_NAME_PASSWORD, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PASSWORD)));
+
+            cursor.close();
+
+            if (userData.size() != 2) {
+                Log.e("AN", userData.toString());
+                return null;
+            }
+
+            return userData;
         }
-        userData.put(Users.COLUMN_NAME_LOGIN, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_LOGIN)));
-        userData.put(Users.COLUMN_NAME_PASSWORD, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PASSWORD)));
+        Log.e("AN", "DZIAŁA2");
 
-        cursor.close();
-
-        if (userData.size() != 1) {
-            return null;
-        }
-
-        return userData;
+        return null;
     }
 
     //remove price it will be counted later
