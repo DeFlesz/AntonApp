@@ -21,11 +21,6 @@ import java.util.Set;
 import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.FragmentViewPagerAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignUp#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SignUp extends Fragment {
 
     public SignUp() {
@@ -35,7 +30,6 @@ public class SignUp extends Fragment {
     ViewPager2 viewPager2;
 
 
-//    // TODO: Rename and change types and number of parameters
 //    public static SignUp newInstance(String param1, String param2) {
 //        SignUp fragment = new SignUp();
 //        Bundle args = new Bundle();
@@ -71,19 +65,23 @@ public class SignUp extends Fragment {
 
         fragmentHashMap.put("Log In", new LogIn());
         fragmentHashMap.put("Register", new Register());
+//        fragmentHashMap.put("Courses", new CourseList()); <- for fun
 
-        FragmentViewPagerAdapter adapter = new FragmentViewPagerAdapter(this, new ArrayList<>(fragmentHashMap.values()));
+        ArrayList<Fragment> fragments = new ArrayList<>(fragmentHashMap.values());
+//        fragments.add(new CourseList()); <- for fun
+
+        FragmentViewPagerAdapter adapter = new FragmentViewPagerAdapter(this, fragments);
         viewPager2.setAdapter(adapter);
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout, viewPager2,
                 (tab, position) -> {
-                    if (position < 2){
+                    if (position < (fragmentHashMap).size()){
                         Set<String> keySet = fragmentHashMap.keySet();
                         String element = (String) keySet.toArray()[position];
                         tab.setText(element);
                     } else {
-                        tab.setText("Object " + position);
+                        tab.setText("Object " + (position + 1));
                     }
                 }
         ).attach();

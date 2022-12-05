@@ -36,11 +36,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DELETE_TABLE + CREATE_TABLE_COURSES);
-        db.execSQL(DELETE_TABLE + CREATE_TABLE_COURSES_OPTIONS);
-        db.execSQL(DELETE_TABLE + CREATE_TABLE_ORDERS);
-        db.execSQL(DELETE_TABLE + CREATE_TABLE_ORDERS_OPTIONS);
-        db.execSQL(DELETE_TABLE + CREATE_TABLE_USERS);
+        db.execSQL(DELETE_TABLE + Users.TABLE_NAME);
+        db.execSQL(DELETE_TABLE + Courses.TABLE_NAME);
+        db.execSQL(DELETE_TABLE + Orders.TABLE_NAME);
+        db.execSQL(DELETE_TABLE + OrdersOptions.TABLE_NAME);
+        db.execSQL(DELETE_TABLE + CoursesOptions.TABLE_NAME);
         onCreate(db);
     }
 
