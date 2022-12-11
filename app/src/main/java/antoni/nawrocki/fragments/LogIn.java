@@ -1,5 +1,7 @@
 package antoni.nawrocki.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
 import antoni.nawrocki.db.DBHelper;
 
@@ -68,6 +71,7 @@ public class LogIn extends Fragment {
 
         loginButton.setOnClickListener(l -> {
             String login = loginInput.getText().toString();
+            String password = passwordInput.getText().toString();
 
             Pattern pattern = Pattern.compile("\\s");
             Matcher matcher = pattern.matcher(login);
@@ -80,14 +84,15 @@ public class LogIn extends Fragment {
 
             DBHelper dbHelper = new DBHelper(getContext());
 
-            boolean success = dbHelper.loginUser(login, passwordInput.getText().toString());
+            boolean success = dbHelper.loginUser(login, password);
 
             if (success) {
-                Toast.makeText(getContext(), "Pomyślnie zalogowano użytkownika!", Toast.LENGTH_SHORT).show();
-                return;
+//                Toast.makeText(getContext(), "Pomyślnie zalogowano użytkownika!", Toast.LENGTH_SHORT).show();
+                saveLogin(login, password);
+                requireActivity().onBackPressed();
             }
 
-            Toast.makeText(getContext(), "Nie udało się zalogować użytkownika!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Nie udało się zalogować użytkownika!", Toast.LENGTH_SHORT).show();
 
 
 //            Toast.makeText(
@@ -96,5 +101,19 @@ public class LogIn extends Fragment {
 //                    Toast.LENGTH_SHORT
 //            ).show();
         });
+    }
+
+    private void saveLogin(String login, String password) {
+        Context context = getActivity();
+        if (context == null) { return; }
+
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.preference_login_key), login);
+        editor.putString(getString(R.string.preference_password_key), password);
+        editor.apply();
+        ((MainActivity) context).invalidateOptionsMenu();
     }
 }

@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="160dp"
     android:layout_margin="6dp">
 
     <LinearLayout
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tytuł"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 />
             <TextView
                 android:id="@+id/course_price"
@@ -47,7 +47,7 @@
                 android:id="@+id/course_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="opis..."
                 android:textColor="@color/black"
                 android:textSize="10sp"

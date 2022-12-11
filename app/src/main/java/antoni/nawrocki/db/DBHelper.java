@@ -88,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         if (!password2.equals(password1)) {
-            Log.e("AN", "loginUser: " + password1 + " " + password2);
+//            Log.e("AN", "loginUser: " + password1 + " " + password2);
             return false;
         }
 
@@ -102,7 +102,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String[] projection = {
                 Users.COLUMN_NAME_LOGIN,
-                Users.COLUMN_NAME_PASSWORD
+                Users.COLUMN_NAME_PASSWORD,
+                Users.COLUMN_NAME_USERNAME
         };
 
         String selection = Users.COLUMN_NAME_LOGIN + " = ?";
@@ -122,17 +123,18 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor != null && cursor.moveToFirst()) {
             userData.put(Users.COLUMN_NAME_LOGIN, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_LOGIN)));
             userData.put(Users.COLUMN_NAME_PASSWORD, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PASSWORD)));
+            userData.put(Users.COLUMN_NAME_USERNAME, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_USERNAME)));
 
             cursor.close();
 
-            if (userData.size() != 2) {
-                Log.e("AN", userData.toString());
+            if (userData.size() != 3) {
+//                Log.e("AN", userData.toString());
                 return null;
             }
 
             return userData;
         }
-        Log.e("AN", "DZIAŁA2");
+//        Log.e("AN", "DZIAŁA2");
 
         return null;
     }

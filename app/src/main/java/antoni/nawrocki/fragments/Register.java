@@ -1,5 +1,7 @@
 package antoni.nawrocki.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
 import antoni.nawrocki.db.DBHelper;
 
@@ -110,7 +113,10 @@ public class Register extends Fragment {
                 );
             }
 
-            if (!passwordsMatching || found) {
+            String username = usernameInput.getText().toString();
+
+            if ((!passwordsMatching || found) || (login == "" || password1 == "" || username == ""))
+            {
                 return;
             }
 
@@ -125,26 +131,26 @@ public class Register extends Fragment {
             );
             
             if (success) {
-                Toast.makeText(getContext(), "Pomyślnie zarejestrowano użytkownika", Toast.LENGTH_SHORT).show();
-                return;
+                saveLogin(login, password1);
+//                Toast.makeText(getContext(), "Pomyślnie zarejestrowano użytkownika", Toast.LENGTH_SHORT).show();
+                requireActivity().onBackPressed();
             }
 
-            Toast.makeText(getContext(), "Nie udało się zarejestrować użytkownika", Toast.LENGTH_SHORT).show();
-
-//            Toast.makeText(
-//                    getContext(),
-//                    "Username: " + usernameInput.getText() +
-//                    ", Login: " + loginInput.getText() +
-//                    (
-//                        passwordInput.getText() == confirmPasswordInput.getText() ?
-//                           "Passwords match: " + passwordInput.getText() :
-//                           "Passwords don't match: [" + passwordInput.getText() +
-//                           ", " + confirmPasswordInput.getText() + "]"
-//                    ) +
-//                    ", Firma?:" + (isCompanyCheckbox.isChecked() ? "Tak" : "Nie")
-//                    ,
-//                    Toast.LENGTH_SHORT
-//            ).show();
+//            Toast.makeText(getContext(), "Nie udało się zarejestrować użytkownika", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void saveLogin(String login, String password) {
+        Context context = getActivity();
+        if (context == null) { return; }
+
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.preference_login_key), login);
+        editor.putString(getString(R.string.preference_password_key), password);
+        editor.apply();
+        ((MainActivity) context).invalidateOptionsMenu();
     }
 }

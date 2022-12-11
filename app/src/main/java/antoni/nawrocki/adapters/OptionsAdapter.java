@@ -51,7 +51,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.title.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_TITLE));
         holder.description.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_DESCRIPTION));
-        holder.price.setText("Cena: " + options.get(position).get(CoursesOptions.COLUMN_NAME_PRICE));
+        holder.price.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_PRICE) + " PLN");
 
         holder.itemView.setOnClickListener(v -> {
             holder.optionButton.performClick();
@@ -67,7 +67,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
                 selectedOptionIDs.remove(optionID);
                 finalPrice -= price;
             }
-            priceField.setText(""+finalPrice);
+            priceField.setText(""+Integer.parseInt(String.valueOf(Math.round(finalPrice))));
 //            Toast.makeText(compoundButton.getContext(), selectedOptionIDs.toString() + ", finalna cena: " + finalPrice, Toast.LENGTH_SHORT).show();
         });
     }

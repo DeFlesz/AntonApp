@@ -8,16 +8,20 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.sql.Date;
 import java.sql.Time;
 
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.fragments.CourseList;
+import antoni.nawrocki.fragments.ProfileView;
 import antoni.nawrocki.fragments.SignUp;
 import antoni.nawrocki.models.CourseModel;
 import antoni.nawrocki.models.CourseOption;
@@ -27,6 +31,9 @@ import antoni.nawrocki.models.UserModel;
 public class MainActivity extends AppCompatActivity {
     DBHelper dbHelper;
     FragmentContainerView fragmentContainerView;
+
+    public String login;
+    public String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 //        FragmentManager fm = getSupportFragmentManager();
 //        fm.beginTransaction()
 //                .add(R.id.fragment_container, CourseList)
-
+        loadPrefs();
+        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
 
 
         setUpDB();
@@ -168,13 +176,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (item.getItemId()) {
             case R.id.menu_signup:
                 getSupportFragmentManager().popBackStack();
-                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, new SignUp())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .setReorderingAllowed(true)
+                        .commit();
+                break;
+//            case R.id.menu_shopcart:
+//                Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT).show();
+//                break;
+
+            case R.id.menu_profile:
+                getSupportFragmentManager().popBackStack();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileView())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack(null)
                         .setReorderingAllowed(true)
@@ -193,10 +214,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        loadPrefs();
+
+        if (login != "" || password != "") {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.logged_in_menu, menu);
+        } else {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu, menu);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onBackPressed() {
         getSupportFragmentManager().popBackStack();
     }
 
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        loadPrefs();
+        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    public void loadPrefs() {
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        login = sharedPreferences.getString(getString(R.string.preference_login_key), "");
+        password = sharedPreferences.getString(getString(R.string.preference_password_key), "");
+    }
     //    @Override
 //    protected void onDestroy() {
 //        if (dbHelper != null) {

@@ -46,9 +46,13 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // TODO
+        //  GET DATA FROM DB NOT FROM GIGA QUERY BEFORE!!!!!!! :)))))
+
+
         holder.title.setText(courses.get(position).get(Courses.COLUMN_NAME_TITLE));
         holder.description.setText(courses.get(position).get(Courses.COLUMN_NAME_DESCRIPTION));
-        holder.price.setText("Cena: " + courses.get(position).get(Courses.COLUMN_NAME_PRICE));
+        holder.price.setText(courses.get(position).get(Courses.COLUMN_NAME_PRICE) + " PLN");
 
         holder.itemView.setOnClickListener(v -> {
 //            Toast.makeText(v.getContext(), string, Toast.LENGTH_SHORT).show();

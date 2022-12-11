@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class CourseView extends Fragment {
     TextView description;
     TextView price;
     Button orderButton;
+    ImageButton backButton;
     RecyclerView recyclerView;
 
     private static final String ARG_PARAM1 = Courses._ID;
@@ -63,6 +65,7 @@ public class CourseView extends Fragment {
         description = view.findViewById(R.id.course_view_description);
         price = view.findViewById(R.id.course_view_price);
         orderButton = view.findViewById(R.id.course_view_buy_button);
+        backButton = view.findViewById(R.id.course_view_back_button);
         recyclerView = view.findViewById(R.id.course_view_recycler);
 
         HashMap<String, String> courseData = new DBHelper(getContext()).getCourse(Long.parseLong(courseID));
@@ -75,6 +78,10 @@ public class CourseView extends Fragment {
 
         OptionsAdapter optionsAdapter = new OptionsAdapter(options, price, basePrice);
         recyclerView.setAdapter(optionsAdapter);
+
+        backButton.setOnClickListener(v -> {
+            requireActivity().onBackPressed();
+        });
 
         orderButton.setOnClickListener(v -> {
             double finalPrice = optionsAdapter.getFinalPrice();
@@ -93,12 +100,12 @@ public class CourseView extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity)requireActivity()).getSupportActionBar().hide();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity)requireActivity()).getSupportActionBar().show();
     }
 }
