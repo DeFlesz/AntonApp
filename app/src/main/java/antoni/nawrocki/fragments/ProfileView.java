@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 
 import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
+import antoni.nawrocki.adapters.OrdersAdapter;
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.db.DBReaderContract;
 
@@ -30,6 +32,8 @@ public class ProfileView extends Fragment {
     ImageButton logOutButton;
 
     TextView nameTextView;
+
+    RecyclerView recyclerView;
 
     public ProfileView() {
         // Required empty public constructor
@@ -56,12 +60,28 @@ public class ProfileView extends Fragment {
 
         nameTextView = view.findViewById(R.id.profile_name);
 
+        recyclerView = view.findViewById(R.id.profile_recycler_view);
+
+
+
         DBHelper dbHelper = new DBHelper(getContext());
         HashMap<String, String> userData = dbHelper.getUser(
                 ((MainActivity) requireActivity()).login);
 
         if (userData != null) {
-            nameTextView.setText(userData.get(Users.COLUMN_NAME_USERNAME));
+            String username = userData.get(Users.COLUMN_NAME_USERNAME);
+            long userID = dbHelper.getUserID();
+
+            nameTextView.setText(username);
+
+            if (userID >= 0) {
+                OrdersAdapter ordersAdapter = new OrdersAdapter(
+                        getContext(),
+                        dbHelper.getOrders(userID)
+                );
+
+                recyclerView.setAdapter(ordersAdapter);
+            }
         }
 
         backButton.setOnClickListener(v -> {

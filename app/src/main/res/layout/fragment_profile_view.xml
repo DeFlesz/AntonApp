@@ -61,12 +61,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:textSize="18sp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="twoje zamówienia"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profile_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
     </RelativeLayout>
 

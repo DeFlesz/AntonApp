@@ -4,6 +4,7 @@ import static antoni.nawrocki.db.DBReaderContract.*;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -12,6 +13,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import antoni.nawrocki.R;
 import antoni.nawrocki.models.CourseModel;
 import antoni.nawrocki.models.CourseOption;
 import antoni.nawrocki.models.OrderModel;
@@ -20,9 +22,11 @@ import antoni.nawrocki.models.UserModel;
 public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "AntonCerts.db";
+    Context context;
 
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -53,20 +57,33 @@ public class DBHelper extends SQLiteOpenHelper {
         if (getUser(login) != null) {
             return false;
         }
+        UserModel newUser = new UserModel(
+                username,
+                login,
+                password,
+                false,
+                isCompany,
+                ""
+        );
 
+        createUser(newUser);
+        return true;
+    }
+
+    public void createUser(
+            UserModel user
+    ) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues userValues = new ContentValues();
-        userValues.put(Users.COLUMN_NAME_IS_ADMIN, false);
-        userValues.put(Users.COLUMN_NAME_IS_COMPANY, isCompany);
-        // profile picture to be added later
-        userValues.put(Users.COLUMN_NAME_PROFILE_PICTURE, "");
-        userValues.put(Users.COLUMN_NAME_PASSWORD, password);
-        userValues.put(Users.COLUMN_NAME_LOGIN, login);
-        userValues.put(Users.COLUMN_NAME_USERNAME, username);
+        ContentValues values = new ContentValues();
+        values.put(Users.COLUMN_NAME_USERNAME, user.getUsername());
+        values.put(Users.COLUMN_NAME_LOGIN, user.getLogin());
+        values.put(Users.COLUMN_NAME_PASSWORD, user.getPassword());
+        values.put(Users.COLUMN_NAME_IS_ADMIN, user.isAdmin());
+        values.put(Users.COLUMN_NAME_IS_COMPANY, user.isCompany());
+        values.put(Users.COLUMN_NAME_PROFILE_PICTURE, user.getProfilePicture());
 
-        db.insert(Users.TABLE_NAME,null, userValues);
-        return true;
+        db.insert(Users.TABLE_NAME, null, values);
     }
 
     public boolean loginUser(String login, String password1){
@@ -103,7 +120,9 @@ public class DBHelper extends SQLiteOpenHelper {
         String[] projection = {
                 Users.COLUMN_NAME_LOGIN,
                 Users.COLUMN_NAME_PASSWORD,
-                Users.COLUMN_NAME_USERNAME
+                Users.COLUMN_NAME_USERNAME,
+                Users._ID,
+                Users.COLUMN_NAME_IS_COMPANY
         };
 
         String selection = Users.COLUMN_NAME_LOGIN + " = ?";
@@ -124,13 +143,10 @@ public class DBHelper extends SQLiteOpenHelper {
             userData.put(Users.COLUMN_NAME_LOGIN, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_LOGIN)));
             userData.put(Users.COLUMN_NAME_PASSWORD, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PASSWORD)));
             userData.put(Users.COLUMN_NAME_USERNAME, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_USERNAME)));
+            userData.put(Users._ID, cursor.getString(cursor.getColumnIndexOrThrow(Users._ID)));
+            userData.put(Users.COLUMN_NAME_IS_COMPANY, cursor.getString(cursor.getColumnIndexOrThrow(Users._ID)));
 
             cursor.close();
-
-            if (userData.size() != 3) {
-//                Log.e("AN", userData.toString());
-                return null;
-            }
 
             return userData;
         }
@@ -182,22 +198,6 @@ public class DBHelper extends SQLiteOpenHelper {
             optionValues.put(CoursesOptions.COLUMN_NAME_PRICE, courseOption.getPrice());
             db.insert(CoursesOptions.TABLE_NAME, null, optionValues);
         }
-    }
-
-    public void createUser(
-            UserModel user
-    ) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(Users.COLUMN_NAME_USERNAME, user.getUsername());
-        values.put(Users.COLUMN_NAME_LOGIN, user.getLogin());
-        values.put(Users.COLUMN_NAME_PASSWORD, user.getPassword());
-        values.put(Users.COLUMN_NAME_IS_ADMIN, user.isAdmin());
-        values.put(Users.COLUMN_NAME_IS_COMPANY, user.isCompany());
-        values.put(Users.COLUMN_NAME_PROFILE_PICTURE, user.getProfilePicture());
-
-        db.insert(Users.TABLE_NAME, null, values);
     }
 
     public ArrayList<HashMap<String, String>> getOptions(long courseID) {
@@ -303,6 +303,77 @@ public class DBHelper extends SQLiteOpenHelper {
             course.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
             course.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
             course.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
+
+            queryResult.add(course);
+        }
+
+        cursor.close();
+        return queryResult;
+    }
+
+    public String getCourseName(long courseID) {
+        HashMap<String, String> courseData = getCourse(courseID);
+
+        return courseData.get(Courses.COLUMN_NAME_TITLE);
+    }
+
+    public long getUserID() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String login = sharedPreferences.getString(context.getString(R.string.preference_login_key), "");
+
+        if (login == "") {
+            return -1;
+        }
+
+        HashMap<String, String> userData = getUser(login);
+
+        if (userData == null || userData.get(Users._ID) == null) {
+            return -1;
+        }
+
+        return Long.parseLong(userData.get(Users._ID));
+    }
+
+    public ArrayList<HashMap<String, String>> getOrders(long userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
+
+        String[] projection = {
+                Orders._ID,
+                Orders.COLUMN_NAME_USER_ID,
+                Orders.COLUMN_NAME_COURSE_ID,
+                Orders.COLUMN_NAME_DATE,
+                Orders.COLUMN_NAME_PRICE,
+                Orders.COLUMN_NAME_AMOUNT,
+        };
+
+        String selection = Orders.COLUMN_NAME_USER_ID + " = ?";
+        String[] selectionArgs = {userID + ""};
+
+        String sortOrder = Orders.COLUMN_NAME_DATE + " DESC";
+
+        Cursor cursor = db.query(
+                Orders.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        while (cursor.moveToNext()){
+            HashMap<String, String> course = new HashMap<>();
+
+            course.put(Orders._ID, cursor.getString(cursor.getColumnIndexOrThrow(Orders._ID)));
+//            course.put(Orders.COLUMN_NAME_COURSE_ID, cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_COURSE_ID)));
+
+            String courseName = getCourseName(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_COURSE_ID))));
+            course.put(Courses.COLUMN_NAME_TITLE, courseName);
+
+            course.put(Orders.COLUMN_NAME_DATE, cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_DATE)));
+            course.put(Orders.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_PRICE)));
 
             queryResult.add(course);
         }

@@ -19,11 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.OptionsAdapter;
 import antoni.nawrocki.db.DBHelper;
+import antoni.nawrocki.models.OrderModel;
 
 public class CourseView extends Fragment {
 
@@ -84,9 +86,41 @@ public class CourseView extends Fragment {
         });
 
         orderButton.setOnClickListener(v -> {
+            DBHelper dbHelper = new DBHelper(getContext());
+            long userID = dbHelper.getUserID();
+            
+            if (userID < 0) {
+                Toast.makeText(getContext(), "Zaloguj się przed zamawianiem!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
             double finalPrice = optionsAdapter.getFinalPrice();
             ArrayList<String> selectedOptionIDs = optionsAdapter.getSelectedOptionIDs();
-            Toast.makeText(getContext(), "ID kursu:" + courseID + ", ID opcji: " + selectedOptionIDs.toString() + ", Cena:" + finalPrice, Toast.LENGTH_SHORT).show();
+
+            OrderModel newOrder = new OrderModel(
+                    1,
+                    new Date(),
+                    finalPrice
+            );
+
+
+            long[] longArray = new long[selectedOptionIDs.size()];
+
+            for (int i = 0; i < selectedOptionIDs.size(); i++) {
+                longArray[i] = Long.parseLong(selectedOptionIDs.get(i));
+            }
+
+            dbHelper.createOrder(
+                    newOrder,
+                    userID,
+                    Long.parseLong(courseID),
+                    longArray
+            );
+
+            Toast.makeText(getContext(), "Pomyślnie dokonałeś zamówienia!", Toast.LENGTH_SHORT).show();
+            requireActivity().onBackPressed();
+
+//            Toast.makeText(getContext(), "ID kursu:" + courseID + ", ID opcji: " + selectedOptionIDs.toString() + ", Cena:" + finalPrice, Toast.LENGTH_SHORT).show();
         });
     }
 

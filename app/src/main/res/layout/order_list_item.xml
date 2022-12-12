@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    >
+
+    <TextView
+        android:textColor="@color/black"
+        android:id="@+id/order_list_item_course_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nazwa kursu"/>
+
+    <TextView
+        android:id="@+id/order_lsit_item_order_date"
+        android:layout_below="@id/order_list_item_course_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="01.01.1970 00:00:00"
+        />
+
+    <TextView
+        android:layout_alignParentEnd="true"
+        android:id="@+id/order_lsit_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100 PLN"
+        />
+
+
+</RelativeLayout>
