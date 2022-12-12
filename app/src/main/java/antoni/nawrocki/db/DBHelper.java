@@ -335,6 +335,74 @@ public class DBHelper extends SQLiteOpenHelper {
         return Long.parseLong(userData.get(Users._ID));
     }
 
+    public ArrayList<Long> getOptionIDs(long orderID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Long> queryResult = new ArrayList<>();
+
+        String[] projection = {
+                OrdersOptions.COLUMN_NAME_ORDER_ID,
+                OrdersOptions.COLUMN_NAME_OPTION_ID
+        };
+
+        String selection = OrdersOptions.COLUMN_NAME_ORDER_ID + " = ?";
+        String[] selectionArgs = {orderID + ""};
+
+        String sortOrder = OrdersOptions.COLUMN_NAME_OPTION_ID + " DESC";
+
+        Cursor cursor = db.query(
+                OrdersOptions.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        while (cursor.moveToNext()){
+            queryResult.add(cursor.getLong(cursor.getColumnIndexOrThrow(OrdersOptions.COLUMN_NAME_OPTION_ID)));
+        }
+
+        return queryResult;
+    }
+
+    public HashMap<String, String> getOptionData(long optionID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        HashMap<String, String> optionData = new HashMap<>();
+
+        String[] projection = {
+                CoursesOptions.COLUMN_NAME_TITLE,
+                CoursesOptions.COLUMN_NAME_DESCRIPTION,
+                CoursesOptions._ID
+        };
+
+        String selection = CoursesOptions._ID + " = ?";
+        String[] selectionArgs = {optionID + ""};
+
+        Cursor cursor = db.query(
+                CoursesOptions.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()){
+            optionData.put(
+                    CoursesOptions.COLUMN_NAME_TITLE,
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE))
+            );
+            optionData.put(
+                    CoursesOptions.COLUMN_NAME_DESCRIPTION,
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION))
+            );
+        }
+
+        return optionData;
+    }
+
     public ArrayList<HashMap<String, String>> getOrders(long userID) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
@@ -369,8 +437,11 @@ public class DBHelper extends SQLiteOpenHelper {
             course.put(Orders._ID, cursor.getString(cursor.getColumnIndexOrThrow(Orders._ID)));
 //            course.put(Orders.COLUMN_NAME_COURSE_ID, cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_COURSE_ID)));
 
-            String courseName = getCourseName(Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_COURSE_ID))));
+            String courseID = cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_COURSE_ID));
+
+            String courseName = getCourseName(Long.parseLong(courseID));
             course.put(Courses.COLUMN_NAME_TITLE, courseName);
+            course.put(Orders.COLUMN_NAME_COURSE_ID, courseID);
 
             course.put(Orders.COLUMN_NAME_DATE, cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_DATE)));
             course.put(Orders.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Orders.COLUMN_NAME_PRICE)));

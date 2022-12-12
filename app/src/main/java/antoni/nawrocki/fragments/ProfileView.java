@@ -101,12 +101,6 @@ public class ProfileView extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-    }
-
     private void logOut() {
         Context context = getActivity();
         if (context == null) { return; }

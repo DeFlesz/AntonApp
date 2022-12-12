@@ -14,4 +14,15 @@
         android:icon="@drawable/ic_baseline_login_24"
         app:showAsAction="ifRoom"
         />
+
+    <item
+        android:title="info o autorze"
+        android:id="@+id/about"
+        />
+
+<!--    <item-->
+<!--        android:title="info o autorze"-->
+<!--        android:id="@+id/language"-->
+<!--        />-->
+
 </menu>

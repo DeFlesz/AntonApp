@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 //        fm.beginTransaction()
 //                .add(R.id.fragment_container, CourseList)
         loadPrefs();
-        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
 
 
         setUpDB();
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         loadPrefs();
-        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
 
         super.onRestoreInstanceState(savedInstanceState);
     }

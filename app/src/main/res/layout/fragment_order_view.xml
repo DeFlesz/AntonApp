@@ -1,14 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.OrderView">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/order_view_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher_background"
+        android:scaleType="centerCrop"
+        />
+
+    <ImageButton
+        android:id="@+id/order_view_back_button"
+        android:layout_margin="8dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/back_gray"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        />
+
+    <LinearLayout
+        android:id="@+id/linear_layout_order_view"
+        android:layout_below="@id/order_view_thumbnail"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:id="@+id/order_view_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:textColor="@color/black"
+            android:text="Tytuł kursu" />
+
+        <TextView
+            android:id="@+id/order_view_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="Bardzo długi i wyczerpujący opis, na który składa się wiele paragrafów oraz innych tego typu..." />
+
+        <TextView
+            android:id="@+id/order_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textAlignment="textEnd"
+            android:text="99 PLN"
+            />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/order_options_recycler_view"
+        android:layout_below="@id/linear_layout_order_view"
+        android:layout_above="@id/order_share_sms_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:layout_alignEnd="@id/linear_layout_order_view"
+        android:layout_alignStart="@id/linear_layout_order_view"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
 
-</FrameLayout>
+    <Button
+        android:layout_margin="2dp"
+        android:layout_alignLeft="@id/linear_layout_order_view"
+        android:id="@+id/order_share_sms_button"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="udostępnij sms"
+        />
+
+    <Button
+        android:layout_margin="2dp"
+        android:layout_alignRight="@id/linear_layout_order_view"
+        android:layout_toRightOf="@id/order_share_sms_button"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="udostępnij email"
+        />
+
+</RelativeLayout>

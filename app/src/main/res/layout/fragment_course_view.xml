@@ -99,7 +99,8 @@
         android:layout_below="@+id/course_view_buy_button"
         android:layout_alignEnd="@id/linear_layout_course_view"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
 
     </RelativeLayout>
 

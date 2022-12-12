@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import antoni.nawrocki.R;
-import antoni.nawrocki.adapters.OptionsAdapter;
+import antoni.nawrocki.adapters.CourseOptionsAdapter;
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.models.OrderModel;
 
@@ -41,14 +41,6 @@ public class CourseView extends Fragment {
 
     public CourseView() {
         // Required empty public constructor
-    }
-
-    public static CourseView newInstance(String param1) {
-        CourseView fragment = new CourseView();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -78,8 +70,8 @@ public class CourseView extends Fragment {
         price.setText(courseData.get(CoursesOptions.COLUMN_NAME_PRICE));
         double basePrice = Long.parseLong(courseData.get(CoursesOptions.COLUMN_NAME_PRICE));
 
-        OptionsAdapter optionsAdapter = new OptionsAdapter(options, price, basePrice);
-        recyclerView.setAdapter(optionsAdapter);
+        CourseOptionsAdapter courseOptionsAdapter = new CourseOptionsAdapter(options, price, basePrice);
+        recyclerView.setAdapter(courseOptionsAdapter);
 
         backButton.setOnClickListener(v -> {
             requireActivity().onBackPressed();
@@ -94,8 +86,8 @@ public class CourseView extends Fragment {
                 return;
             }
             
-            double finalPrice = optionsAdapter.getFinalPrice();
-            ArrayList<String> selectedOptionIDs = optionsAdapter.getSelectedOptionIDs();
+            double finalPrice = courseOptionsAdapter.getFinalPrice();
+            ArrayList<String> selectedOptionIDs = courseOptionsAdapter.getSelectedOptionIDs();
 
             OrderModel newOrder = new OrderModel(
                     1,
@@ -135,11 +127,5 @@ public class CourseView extends Fragment {
     public void onResume() {
         super.onResume();
         ((AppCompatActivity)requireActivity()).getSupportActionBar().hide();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((AppCompatActivity)requireActivity()).getSupportActionBar().show();
     }
 }
