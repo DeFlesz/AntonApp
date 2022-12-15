@@ -12,6 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.CoursesAdapter;
 import antoni.nawrocki.db.DBHelper;
@@ -35,7 +39,22 @@ public class CourseList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.course_recycler);
 
-        CoursesAdapter coursesAdapter = new CoursesAdapter(new DBHelper(getContext()).getCourses(), getActivity());
+        DBHelper dbHelper = new DBHelper(getContext());
+        String login = ((MainActivity) requireActivity()).login;
+
+        CoursesAdapter coursesAdapter = new CoursesAdapter(dbHelper.getCourses(), getActivity());
+
+        if (!login.equals("")){
+            ArrayList<HashMap<String, String>> data = dbHelper.getCourses(dbHelper.getUserID());
+
+            if (data != null) {
+                coursesAdapter = new CoursesAdapter(data, getActivity());
+            }
+            else {
+                coursesAdapter = null;
+            }
+        }
+
         recyclerView.setAdapter(coursesAdapter);
     }
 
@@ -49,6 +68,12 @@ public class CourseList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        String login = ((MainActivity) requireActivity()).login;
+        if (login.equals("")){
+            CoursesAdapter coursesAdapter = new CoursesAdapter(new DBHelper(getContext()).getCourses(), getActivity());
+            recyclerView.setAdapter(coursesAdapter);
+        }
+
         ((AppCompatActivity)requireActivity()).getSupportActionBar().show();
     }
 }

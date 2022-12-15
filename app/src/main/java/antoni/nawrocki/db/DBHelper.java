@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -291,6 +292,75 @@ public class DBHelper extends SQLiteOpenHelper {
                 projection,
                 null,
                 null,
+                null,
+                null,
+                sortOrder
+        );
+
+        while (cursor.moveToNext()){
+            HashMap<String, String> course = new HashMap<>();
+
+            course.put(Courses._ID, cursor.getString(cursor.getColumnIndexOrThrow(Courses._ID)));
+            course.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
+            course.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
+            course.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
+
+            queryResult.add(course);
+        }
+
+        cursor.close();
+        return queryResult;
+    }
+
+    public ArrayList<HashMap<String, String>> getCourses(long userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
+
+        String[] projection = {
+                Courses._ID,
+                Courses.COLUMN_NAME_TITLE,
+                Courses.COLUMN_NAME_DESCRIPTION,
+                Courses.COLUMN_NAME_PRICE,
+        };
+
+        ArrayList<HashMap<String, String>> userOrders = getOrders(userID);
+        String statement = "";
+        String[] strings = new String[userOrders.size() ];
+
+        if (userOrders.size() < 1) {
+            return null;
+        }
+
+        for (int i = 0; i < userOrders.size(); i++){
+            HashMap<String, String> hashMap = userOrders.get(i);
+            strings[i] = (hashMap.get(Orders.COLUMN_NAME_COURSE_ID));
+
+            statement += "?";
+
+            if (i == userOrders.size()-1){
+                break;
+            }
+
+            statement += ", ";
+        }
+
+//        Toast.makeText(context, statement, Toast.LENGTH_SHORT).show();
+
+        String selection = Courses._ID + " NOT IN ( "+ statement +" )";
+        String[] selectionArgs = strings;
+
+        if (userOrders.size() == 1) {
+            selection = Courses._ID + " != ?";
+            selectionArgs = new String[]{userOrders.get(0).get(Orders.COLUMN_NAME_COURSE_ID)};
+        }
+
+        String sortOrder = Courses.COLUMN_NAME_PRICE + " ASC";
+
+        Cursor cursor = db.query(
+                Courses.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 sortOrder
