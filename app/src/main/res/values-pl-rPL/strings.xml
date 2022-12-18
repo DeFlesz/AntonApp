@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zam_w_kurs">Zamów Kurs</string>
+    <string name="username_label">Pełne imie:</string>
+    <string name="sign_up_button">Zarejestruj się</string>
+    <string name="sign_up">Zarejestruj się</string>
+    <string name="sign_in">Zaloguj się</string>
+    <string name="share_sms">udostępnij sms</string>
+    <string name="share_email">udostępnij email</string>
+    <string name="school_class">Klasa:</string>
+    <string name="register_header">Rejestracja</string>
+    <string name="password2_label">Powtórz hasło:</string>
+    <string name="password1_label">Hasło:</string>
+    <string name="password">Hasło:</string>
+    <string name="no_courses_splash">Brak kursów ;-;</string>
+    <string name="made_by">Stworzone przez:</string>
+    <string name="login_label">Login:</string>
+    <string name="login">Login:</string>
+    <string name="log_in_header">Logowanie</string>
+    <string name="company_checkbox">Jesteś firmą?</string>
+    <string name="about">info. o autorze</string>
+    <string name="log_in_toast">Zaloguj się przed zamawianiem!</string>
+</resources>

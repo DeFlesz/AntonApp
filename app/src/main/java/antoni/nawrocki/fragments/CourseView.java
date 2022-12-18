@@ -2,6 +2,8 @@ package antoni.nawrocki.fragments;
 
 import static antoni.nawrocki.db.DBReaderContract.*;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -82,7 +84,7 @@ public class CourseView extends Fragment {
             long userID = dbHelper.getUserID();
             
             if (userID < 0) {
-                Toast.makeText(getContext(), "Zaloguj się przed zamawianiem!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.log_in_toast), Toast.LENGTH_SHORT).show();
                 return;
             }
             
@@ -109,7 +111,7 @@ public class CourseView extends Fragment {
                     longArray
             );
 
-            Toast.makeText(getContext(), "Pomyślnie dokonałeś zamówienia!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Pomyślnie dokonałeś zamówienia!", Toast.LENGTH_SHORT).show();
             requireActivity().onBackPressed();
 
 //            Toast.makeText(getContext(), "ID kursu:" + courseID + ", ID opcji: " + selectedOptionIDs.toString() + ", Cena:" + finalPrice, Toast.LENGTH_SHORT).show();
@@ -126,6 +128,16 @@ public class CourseView extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Context context = getActivity();
+        if (context == null) { return; }
+
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("current_course", courseID);
+        editor.apply();
+
         ((AppCompatActivity)requireActivity()).getSupportActionBar().hide();
     }
 }

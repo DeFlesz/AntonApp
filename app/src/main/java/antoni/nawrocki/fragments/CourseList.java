@@ -1,16 +1,24 @@
 package antoni.nawrocki.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +31,7 @@ import antoni.nawrocki.db.DBHelper;
 
 public class CourseList extends Fragment {
     RecyclerView recyclerView;
+    FragmentContainerView fragmentContainerView;
 
     public CourseList() {
         // Required empty public constructor
@@ -38,6 +47,7 @@ public class CourseList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.course_recycler);
+        fragmentContainerView = view.findViewById(R.id.course_fragment_container);
 
         DBHelper dbHelper = new DBHelper(getContext());
         String login = ((MainActivity) requireActivity()).login;
@@ -47,12 +57,21 @@ public class CourseList extends Fragment {
         if (!login.equals("")){
             ArrayList<HashMap<String, String>> data = dbHelper.getCourses(dbHelper.getUserID());
 
-            if (data != null) {
-                coursesAdapter = new CoursesAdapter(data, getActivity());
+            if(data.size() < 1) {
+                Log.i("TAG", "aaaa");
+
+
+                if (getActivity() != null && getContext() != null) {
+                    FragmentManager fragmentManager = ((MainActivity) getContext()).getSupportFragmentManager();
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.course_fragment_container, new NoCourses())
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .commit();
+                }
             }
-            else {
-                coursesAdapter = null;
-            }
+
+            coursesAdapter = new CoursesAdapter(data, getActivity());
         }
 
         recyclerView.setAdapter(coursesAdapter);
@@ -73,6 +92,16 @@ public class CourseList extends Fragment {
             CoursesAdapter coursesAdapter = new CoursesAdapter(new DBHelper(getContext()).getCourses(), getActivity());
             recyclerView.setAdapter(coursesAdapter);
         }
+
+        Context context = getActivity();
+        if (context == null) { return; }
+
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.current_course_key), "");
+        editor.apply();
 
         ((AppCompatActivity)requireActivity()).getSupportActionBar().show();
     }

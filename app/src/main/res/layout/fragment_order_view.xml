@@ -81,7 +81,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="udostępnij sms"
+        android:text="@string/share_sms"
         />
 
     <Button
@@ -91,7 +91,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="udostępnij email"
+        android:text="@string/share_email"
         />
 
 </RelativeLayout>

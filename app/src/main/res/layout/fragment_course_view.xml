@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/course_view_thumbnail"
@@ -81,13 +81,13 @@
         android:gravity="center_vertical"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:text="PLN" />
+        android:text="@string/currency" />
 
     <Button
         android:layout_alignEnd="@id/linear_layout_course_view"
         android:layout_below="@id/linear_layout_course_view"
         android:id="@+id/course_view_buy_button"
-        android:text="Zamów kurs"
+        android:text="@string/zam_w_kurs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />

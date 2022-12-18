@@ -8,7 +8,7 @@
     <TextView
         android:layout_centerHorizontal="true"
         android:layout_above="@id/login_scroll_view"
-        android:text="Logowanie"
+        android:text="@string/log_in_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -39,7 +39,7 @@
                     android:labelFor="@id/login_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Login: "
+                    android:text="@string/login"
                     android:textColor="@color/black"
                     />
                 <EditText
@@ -55,7 +55,7 @@
                     android:labelFor="@id/login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hasło: "
+                    android:text="@string/password"
                     android:textColor="@color/black"
                     />
                 <EditText
@@ -80,7 +80,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Zaloguj się"
+                android:text="@string/sign_in"
                 />
 
         </RelativeLayout>

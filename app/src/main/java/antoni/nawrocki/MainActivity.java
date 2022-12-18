@@ -1,5 +1,7 @@
 package antoni.nawrocki;
 
+import static antoni.nawrocki.db.DBReaderContract.*;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -20,7 +22,10 @@ import java.sql.Date;
 import java.sql.Time;
 
 import antoni.nawrocki.db.DBHelper;
+import antoni.nawrocki.db.DBReaderContract;
 import antoni.nawrocki.fragments.CourseList;
+import antoni.nawrocki.fragments.CourseView;
+import antoni.nawrocki.fragments.Credits;
 import antoni.nawrocki.fragments.ProfileView;
 import antoni.nawrocki.fragments.SignUp;
 import antoni.nawrocki.models.CourseModel;
@@ -47,6 +52,26 @@ public class MainActivity extends AppCompatActivity {
 //        fm.beginTransaction()
 //                .add(R.id.fragment_container, CourseList)
         loadPrefs();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String currentCourse = sharedPreferences.getString(getString(R.string.current_course_key), "");
+
+        if (currentCourse != "") {
+            Bundle bundle = new Bundle();
+            bundle.putString(Courses._ID, currentCourse);
+
+            CourseView courseView = new CourseView();
+            courseView.setArguments(bundle);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, courseView)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .setReorderingAllowed(true)
+                    .commit();
+        }
 //        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
 
 
@@ -196,6 +221,16 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().popBackStack();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, new ProfileView())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .setReorderingAllowed(true)
+                        .commit();
+                break;
+
+            case R.id.about:
+                getSupportFragmentManager().popBackStack();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new Credits())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack(null)
                         .setReorderingAllowed(true)

@@ -328,7 +328,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String[] strings = new String[userOrders.size() ];
 
         if (userOrders.size() < 1) {
-            return null;
+            return getCourses();
         }
 
         for (int i = 0; i < userOrders.size(); i++){

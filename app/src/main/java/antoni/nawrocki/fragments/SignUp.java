@@ -64,8 +64,8 @@ public class SignUp extends Fragment {
 
         HashMap<String, Fragment> fragmentHashMap = new HashMap<>();
 
-        fragmentHashMap.put("Log In", new LogIn());
-        fragmentHashMap.put("Register", new Register());
+        fragmentHashMap.put(getString(R.string.log_in_header), new LogIn());
+        fragmentHashMap.put(getString(R.string.register_header), new Register());
 //        fragmentHashMap.put("Courses", new CourseList()); <- for fun
 
         ArrayList<Fragment> fragments = new ArrayList<>(fragmentHashMap.values());
