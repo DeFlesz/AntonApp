@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -18,14 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.zip.Inflater;
 
 import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
-import antoni.nawrocki.db.DBReaderContract;
-import antoni.nawrocki.fragments.CourseList;
 import antoni.nawrocki.fragments.CourseView;
-import antoni.nawrocki.models.CourseModel;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
     private ArrayList<HashMap<String, String>> courses;
@@ -65,9 +60,13 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             courseView.setArguments(bundle);
 
             FragmentManager fragmentManager = ((MainActivity) context).getSupportFragmentManager();
-            fragmentManager.beginTransaction()
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right);
+            fragmentTransaction
                     .replace(R.id.fragment_container, courseView)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack(null)
                     .setReorderingAllowed(true)
                     .commit();

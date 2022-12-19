@@ -33,6 +33,7 @@
             />
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:layout_marginTop="4dp"
         android:id="@+id/profile_picture"
         android:layout_height="125dp"
         android:layout_width="125dp"
@@ -43,7 +44,7 @@
         />
 
     <TextView
-        android:textSize="32sp"
+        android:textSize="24sp"
         android:layout_below="@id/profile_picture"
         android:layout_centerHorizontal="true"
         android:id="@+id/profile_name"

@@ -33,6 +33,13 @@ import antoni.nawrocki.models.CourseOption;
 import antoni.nawrocki.models.OrderModel;
 import antoni.nawrocki.models.UserModel;
 
+/*
+    TODO:
+     [] share sms
+     [] share email
+     [] photos handling
+ */
+
 public class MainActivity extends AppCompatActivity {
     DBHelper dbHelper;
     FragmentContainerView fragmentContainerView;
@@ -77,6 +84,98 @@ public class MainActivity extends AppCompatActivity {
 
         setUpDB();
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        switch (item.getItemId()) {
+            case R.id.menu_signup:
+                getSupportFragmentManager().popBackStack();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new SignUp())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .setReorderingAllowed(true)
+                        .commit();
+                break;
+//            case R.id.menu_shopcart:
+//                Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT).show();
+//                break;
+
+            case R.id.menu_profile:
+                getSupportFragmentManager().popBackStack();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileView())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .setReorderingAllowed(true)
+                        .commit();
+                break;
+
+            case R.id.about:
+                getSupportFragmentManager().popBackStack();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new Credits())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .setReorderingAllowed(true)
+                        .commit();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        loadPrefs();
+
+        if (login != "" || password != "") {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.logged_in_menu, menu);
+        } else {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu, menu);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        loadPrefs();
+//        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    public void loadPrefs() {
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        login = sharedPreferences.getString(getString(R.string.preference_login_key), "");
+        password = sharedPreferences.getString(getString(R.string.preference_password_key), "");
+    }
+    //    @Override
+//    protected void onDestroy() {
+//        if (dbHelper != null) {
+//            dbHelper.close();
+//        }
+//        super.onDestroy();
+//    }
 
     public void setUpDB() {
         if (dbHelper.getCourses().size() != 0) {
@@ -198,95 +297,4 @@ public class MainActivity extends AppCompatActivity {
 //        );
 
     }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        switch (item.getItemId()) {
-            case R.id.menu_signup:
-                getSupportFragmentManager().popBackStack();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, new SignUp())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack(null)
-                        .setReorderingAllowed(true)
-                        .commit();
-                break;
-//            case R.id.menu_shopcart:
-//                Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT).show();
-//                break;
-
-            case R.id.menu_profile:
-                getSupportFragmentManager().popBackStack();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, new ProfileView())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack(null)
-                        .setReorderingAllowed(true)
-                        .commit();
-                break;
-
-            case R.id.about:
-                getSupportFragmentManager().popBackStack();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, new Credits())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack(null)
-                        .setReorderingAllowed(true)
-                        .commit();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        loadPrefs();
-
-        if (login != "" || password != "") {
-            menu.clear();
-            getMenuInflater().inflate(R.menu.logged_in_menu, menu);
-        } else {
-            menu.clear();
-            getMenuInflater().inflate(R.menu.menu, menu);
-        }
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void onBackPressed() {
-        getSupportFragmentManager().popBackStack();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        loadPrefs();
-//        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
-
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    public void loadPrefs() {
-        SharedPreferences sharedPreferences = getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        login = sharedPreferences.getString(getString(R.string.preference_login_key), "");
-        password = sharedPreferences.getString(getString(R.string.preference_password_key), "");
-    }
-    //    @Override
-//    protected void onDestroy() {
-//        if (dbHelper != null) {
-//            dbHelper.close();
-//        }
-//        super.onDestroy();
-//    }
 }

@@ -63,7 +63,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             orderView.setArguments(bundle);
 
             FragmentManager fragmentManager = ((MainActivity) context).getSupportFragmentManager();
-            fragmentManager.beginTransaction()
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right);
+
+            fragmentTransaction
                     .replace(R.id.fragment_container, orderView)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack(null)

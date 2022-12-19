@@ -78,7 +78,7 @@ public class LogIn extends Fragment {
             boolean found = matcher.find();
 
             if (found) {
-                validationText.setText("Login nie może zawierać białych znaków!");
+                validationText.setText(getString(R.string.white_spaces_validation));
                 return;
             }
 

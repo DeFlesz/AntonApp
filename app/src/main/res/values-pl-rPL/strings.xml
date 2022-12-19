@@ -20,4 +20,6 @@
     <string name="company_checkbox">Jesteś firmą?</string>
     <string name="about">info. o autorze</string>
     <string name="log_in_toast">Zaloguj się przed zamawianiem!</string>
+    <string name="white_spaces_validation">Login nie może zawierać białych znaków!</string>
+    <string name="passwords_dont_match">Hasła nie są takie same!</string>
 </resources>

@@ -76,15 +76,6 @@ public class Register extends Fragment {
         registerButton = view.findViewById(R.id.register_button);
         validationText = view.findViewById(R.id.register_text);
 
-        /*
-         TODO
-          [x] validation - passwords matching, correct username not to long, correct login
-          [] registering to database
-          [] validation in database
-          []? logging in immediately
-        */
-
-
         registerButton.setOnClickListener(l -> {
             validationText.setText("");
             String password1 = passwordInput.getText().toString();
@@ -94,8 +85,8 @@ public class Register extends Fragment {
             if (!passwordsMatching) {
                 String validationString = validationText.getText().toString();
                 validationText.setText(validationString.isEmpty() ?
-                        "Hasła nie są takie same!" :
-                        validationString + ", Hasła nie są takie same!"
+                        getString(R.string.passwords_dont_match) :
+                        validationString + ", " + getString(R.string.passwords_dont_match)
                 );
             }
 
@@ -108,8 +99,8 @@ public class Register extends Fragment {
             if (found) {
                 String validationString = validationText.getText().toString();
                 validationText.setText(validationString.isEmpty() ?
-                        "Login nie może zawierać białych znaków!" :
-                        validationString + ", Login nie może zawierać białych znaków!"
+                        getString(R.string.white_spaces_validation) :
+                        validationString + ", " + getString(R.string.white_spaces_validation)
                 );
             }
 
