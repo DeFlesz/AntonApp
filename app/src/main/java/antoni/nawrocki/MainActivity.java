@@ -35,7 +35,7 @@ import antoni.nawrocki.models.UserModel;
 
 /*
     TODO:
-     [] share sms
+     [x] share sms
      [] share email
      [] photos handling
  */

@@ -85,6 +85,7 @@
         />
 
     <Button
+        android:id="@+id/order_share_email_button"
         android:layout_margin="2dp"
         android:layout_alignRight="@id/linear_layout_order_view"
         android:layout_toRightOf="@id/order_share_sms_button"

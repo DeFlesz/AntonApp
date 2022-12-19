@@ -59,6 +59,8 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             CourseView courseView = new CourseView();
             courseView.setArguments(bundle);
 
+//            ((MainActivity) context).getSupportActionBar().hide();
+
             FragmentManager fragmentManager = ((MainActivity) context).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,

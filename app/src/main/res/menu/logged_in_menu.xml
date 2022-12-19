@@ -9,7 +9,7 @@
 <!--        />-->
 
     <item
-        android:title="@string/sign_up"
+        android:title="@string/account"
         android:id="@+id/menu_profile"
         android:icon="@drawable/ic_baseline_account_circle_24"
         app:showAsAction="ifRoom"

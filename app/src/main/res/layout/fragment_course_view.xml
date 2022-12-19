@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.CourseView">
+    tools:context=".fragments.CourseView"
+    android:background="#D6D6D6"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"

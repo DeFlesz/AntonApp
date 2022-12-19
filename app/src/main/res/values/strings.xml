@@ -30,4 +30,7 @@
     <string name="current_course_key" translatable="false">current_course</string>
     <string name="white_spaces_validation">Login cannot contain whitespaces!</string>
     <string name="passwords_dont_match">Passwords don\'t match!</string>
+    <string name="account">Account</string>
+    <string name="choosen_options">Choosen options:</string>
+    <string name="final_price">Final price:</string>
 </resources>
