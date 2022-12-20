@@ -115,6 +115,21 @@ public class OrderView extends Fragment {
             requireActivity().onBackPressed();
         });
 
+        shareEmailButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, "");
+            intent.putExtra(Intent.EXTRA_SUBJECT, titleTextView.getText().toString());
+            intent.putExtra(Intent.EXTRA_TEXT, getMessage());
+//            Toast.makeText(getContext(), "start", Toast.LENGTH_SHORT).show();
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), R.string.email_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         shareSMSButton.setOnClickListener(v -> {
             if (
                     !checkPermissions(Manifest.permission.READ_SMS, 1)
@@ -122,24 +137,11 @@ public class OrderView extends Fragment {
                 return;
             }
 
-            TelephonyManager tpm = (TelephonyManager) ((MainActivity) requireContext()).getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tpm = (TelephonyManager) requireContext().getSystemService(Context.TELEPHONY_SERVICE);
             String number = tpm.getLine1Number();
 
-            String option = "";
+            String text = getMessage();
 
-            for (HashMap<String, String> map:
-                 options) {
-                option += "\n- " + map.get(CoursesOptions.COLUMN_NAME_TITLE);
-            }
-
-            String text = ""
-                    + titleTextView.getText().toString()
-                    + "\n\n"
-                    + descriptionTextView.getText().toString()
-                    + (option != "" ? "\n\n" + getString(R.string.choosen_options) : "")
-                    + option
-                    + "\n"
-                    + "\n"+ getString(R.string.final_price) +" " + price;
             Uri uri = Uri.parse("smsto:" + number);
             Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
             intent.putExtra("sms_body", text);
@@ -148,9 +150,29 @@ public class OrderView extends Fragment {
 //            addMessage(destinationAdress, text);
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "SMS failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.sms_error, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public String getMessage() {
+        String option = "";
+
+        for (HashMap<String, String> map:
+                options) {
+            option += "\n- " + map.get(CoursesOptions.COLUMN_NAME_TITLE);
+        }
+
+        String text = ""
+                + titleTextView.getText().toString()
+                + "\n\n"
+                + descriptionTextView.getText().toString()
+                + (option != "" ? "\n\n" + getString(R.string.choosen_options) : "")
+                + option
+                + "\n"
+                + "\n"+ getString(R.string.final_price) +" " + price;
+
+        return text;
     }
 
     public boolean checkPermissions(String permission, int requestCode) {

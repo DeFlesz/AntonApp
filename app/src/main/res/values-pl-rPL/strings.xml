@@ -25,4 +25,6 @@
     <string name="account">Konto</string>
     <string name="choosen_options">Wybrane opcje:</string>
     <string name="final_price">Finalna cena:</string>
+    <string name="email_error">udostępnianie emailem się nie powiodło</string>
+    <string name="sms_error">udostepnianie sms się nie powiodło</string>
 </resources>

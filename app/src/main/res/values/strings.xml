@@ -33,4 +33,6 @@
     <string name="account">Account</string>
     <string name="choosen_options">Choosen options:</string>
     <string name="final_price">Final price:</string>
+    <string name="email_error">sharing Email failed</string>
+    <string name="sms_error">sharing sms failed</string>
 </resources>
