@@ -47,6 +47,7 @@ public class OrderView extends Fragment {
 
     Button shareSMSButton;
     Button shareEmailButton;
+    Button shareAnythingButton;
 
     ImageButton backButton;
     ImageView thumbnail;
@@ -118,9 +119,18 @@ public class OrderView extends Fragment {
         backButton = view.findViewById(R.id.order_view_back_button);
         shareSMSButton = view.findViewById(R.id.order_share_sms_button);
         shareEmailButton = view.findViewById(R.id.order_share_email_button);
+        shareAnythingButton = view.findViewById(R.id.order_share_anything);
 
         backButton.setOnClickListener(v -> {
             requireActivity().onBackPressed();
+        });
+
+        shareAnythingButton.setOnClickListener(v -> {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getMessage());
+            shareIntent.setType("text/*");
+            startActivity(Intent.createChooser(shareIntent, "send"));
         });
 
         shareEmailButton.setOnClickListener(v -> {

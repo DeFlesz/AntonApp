@@ -28,4 +28,5 @@
     <string name="email_error">udostępnianie emailem się nie powiodło</string>
     <string name="sms_error">udostepnianie sms się nie powiodło</string>
     <string name="base64_format_picture">Obrazki w formacie Base64</string>
+    <string name="share_with_anything">Udostępnij w czymkolwiek</string>
 </resources>
