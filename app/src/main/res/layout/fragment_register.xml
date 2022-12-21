@@ -122,5 +122,11 @@
     </ScrollView>
 
 
-
+    <EditText
+        android:id="@+id/register_profile_pic"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="@string/base64_format_picture"
+        />
 </RelativeLayout>

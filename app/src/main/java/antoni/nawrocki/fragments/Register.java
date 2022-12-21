@@ -29,6 +29,7 @@ public class Register extends Fragment {
     EditText loginInput;
     EditText passwordInput;
     EditText confirmPasswordInput;
+    EditText profilePictureInput;
 
     TextView validationText;
 
@@ -75,6 +76,9 @@ public class Register extends Fragment {
         isCompanyCheckbox = view.findViewById(R.id.register_is_company_checkbox);
         registerButton = view.findViewById(R.id.register_button);
         validationText = view.findViewById(R.id.register_text);
+        profilePictureInput = view.findViewById(R.id.register_profile_pic);
+
+
 
         registerButton.setOnClickListener(l -> {
             validationText.setText("");
@@ -118,7 +122,8 @@ public class Register extends Fragment {
                     usernameInput.getText().toString(),
                     login,
                     password1,
-                    isCompanyCheckbox.isChecked()
+                    isCompanyCheckbox.isChecked(),
+                    profilePictureInput.getText().toString()
             );
             
             if (success) {

@@ -12,17 +12,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.OrdersAdapter;
+import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.db.DBReaderContract;
 
@@ -34,6 +39,8 @@ public class ProfileView extends Fragment {
     TextView nameTextView;
 
     RecyclerView recyclerView;
+
+    ImageView profilePic;
 
     public ProfileView() {
         // Required empty public constructor
@@ -62,6 +69,7 @@ public class ProfileView extends Fragment {
 
         recyclerView = view.findViewById(R.id.profile_recycler_view);
 
+        profilePic = view.findViewById(R.id.profile_picture);
 
 
         DBHelper dbHelper = new DBHelper(getContext());
@@ -71,7 +79,6 @@ public class ProfileView extends Fragment {
         if (userData != null) {
             String username = userData.get(Users.COLUMN_NAME_USERNAME);
             long userID = dbHelper.getUserID();
-
             nameTextView.setText(username);
 
             if (userID >= 0) {
@@ -81,6 +88,13 @@ public class ProfileView extends Fragment {
                 );
 
                 recyclerView.setAdapter(ordersAdapter);
+            }
+            String pic = userData.get(Users.COLUMN_NAME_PROFILE_PICTURE);
+
+            if (pic != null && (!Objects.equals(pic, "") || !Objects.equals(pic, "STRING_TOO_LARGE"))) {
+//                Log.i("AN", "base64: " + pic);
+                Base64Converter.decodeBase64StringAndSetImage(pic, profilePic);
+
             }
         }
 

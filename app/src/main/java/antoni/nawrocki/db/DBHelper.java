@@ -54,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVer, newVer);
     }
 
-    public boolean registerUser(String username, String login, String password, boolean isCompany){
+    public boolean registerUser(String username, String login, String password, boolean isCompany, String profilePic){
         if (getUser(login) != null) {
             return false;
         }
@@ -64,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 password,
                 false,
                 isCompany,
-                ""
+                profilePic
         );
 
         createUser(newUser);
@@ -123,7 +123,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Users.COLUMN_NAME_PASSWORD,
                 Users.COLUMN_NAME_USERNAME,
                 Users._ID,
-                Users.COLUMN_NAME_IS_COMPANY
+                Users.COLUMN_NAME_IS_COMPANY,
+                Users.COLUMN_NAME_PROFILE_PICTURE
         };
 
         String selection = Users.COLUMN_NAME_LOGIN + " = ?";
@@ -146,6 +147,7 @@ public class DBHelper extends SQLiteOpenHelper {
             userData.put(Users.COLUMN_NAME_USERNAME, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_USERNAME)));
             userData.put(Users._ID, cursor.getString(cursor.getColumnIndexOrThrow(Users._ID)));
             userData.put(Users.COLUMN_NAME_IS_COMPANY, cursor.getString(cursor.getColumnIndexOrThrow(Users._ID)));
+            userData.put(Users.COLUMN_NAME_PROFILE_PICTURE, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PROFILE_PICTURE)));
 
             cursor.close();
 

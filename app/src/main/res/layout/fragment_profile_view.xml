@@ -40,7 +40,7 @@
         android:src="@drawable/ic_launcher_background"
         app:shapeAppearance="@style/CornerCut"
         android:layout_centerHorizontal="true"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         />
 
     <TextView
