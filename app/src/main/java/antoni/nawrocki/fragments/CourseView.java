@@ -17,20 +17,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
 import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.CourseOptionsAdapter;
+import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.models.OrderModel;
 
 public class CourseView extends Fragment {
 
+    ImageView thumbnail;
     TextView title;
     TextView description;
     TextView price;
@@ -63,14 +67,21 @@ public class CourseView extends Fragment {
         orderButton = view.findViewById(R.id.course_view_buy_button);
         backButton = view.findViewById(R.id.course_view_back_button);
         recyclerView = view.findViewById(R.id.course_view_recycler);
+        thumbnail = view.findViewById(R.id.course_view_thumbnail);
 
         HashMap<String, String> courseData = new DBHelper(getContext()).getCourse(Long.parseLong(courseID));
         ArrayList<HashMap<String, String>> options = new DBHelper(getContext()).getOptions(Long.parseLong(courseID));
 
-        title.setText(courseData.get(CoursesOptions.COLUMN_NAME_TITLE));
-        description.setText(courseData.get(CoursesOptions.COLUMN_NAME_DESCRIPTION));
-        price.setText(courseData.get(CoursesOptions.COLUMN_NAME_PRICE));
-        double basePrice = Long.parseLong(courseData.get(CoursesOptions.COLUMN_NAME_PRICE));
+        String imageData = courseData.get(Courses.COLUMN_NAME_THUMBNAIL);
+
+        if (imageData != null && (!Objects.equals(thumbnail, "") || !Objects.equals(thumbnail, "STRING_TOO_LARGE"))) {
+            Base64Converter.decodeBase64StringAndSetImage(imageData, thumbnail);
+        }
+
+        title.setText(courseData.get(Courses.COLUMN_NAME_TITLE));
+        description.setText(courseData.get(Courses.COLUMN_NAME_DESCRIPTION));
+        price.setText(courseData.get(Courses.COLUMN_NAME_PRICE));
+        double basePrice = Long.parseLong(courseData.get(Courses.COLUMN_NAME_PRICE));
 
         CourseOptionsAdapter courseOptionsAdapter = new CourseOptionsAdapter(options, price, basePrice);
         recyclerView.setAdapter(courseOptionsAdapter);

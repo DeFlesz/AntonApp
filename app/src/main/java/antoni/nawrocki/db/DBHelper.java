@@ -250,6 +250,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Courses.COLUMN_NAME_TITLE,
                 Courses.COLUMN_NAME_DESCRIPTION,
                 Courses.COLUMN_NAME_PRICE,
+                Courses.COLUMN_NAME_THUMBNAIL
         };
 
         String selection = Courses._ID + " = ?";
@@ -269,6 +270,7 @@ public class DBHelper extends SQLiteOpenHelper {
         courseData.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
         courseData.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
         courseData.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
+        courseData.put(Courses.COLUMN_NAME_THUMBNAIL, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_THUMBNAIL)));
 
         cursor.close();
         return courseData;
@@ -283,6 +285,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Courses.COLUMN_NAME_TITLE,
                 Courses.COLUMN_NAME_DESCRIPTION,
                 Courses.COLUMN_NAME_PRICE,
+                Courses.COLUMN_NAME_THUMBNAIL
         };
 
         String sortOrder = Courses.COLUMN_NAME_PRICE + " ASC";
@@ -304,6 +307,7 @@ public class DBHelper extends SQLiteOpenHelper {
             course.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
             course.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
             course.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
+            course.put(Courses.COLUMN_NAME_THUMBNAIL, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_THUMBNAIL)));
 
             queryResult.add(course);
         }
@@ -321,6 +325,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Courses.COLUMN_NAME_TITLE,
                 Courses.COLUMN_NAME_DESCRIPTION,
                 Courses.COLUMN_NAME_PRICE,
+                Courses.COLUMN_NAME_THUMBNAIL
         };
 
         ArrayList<HashMap<String, String>> userOrders = getOrders(userID);
@@ -373,6 +378,7 @@ public class DBHelper extends SQLiteOpenHelper {
             course.put(Courses.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_TITLE)));
             course.put(Courses.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_DESCRIPTION)));
             course.put(Courses.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_PRICE)));
+            course.put(Courses.COLUMN_NAME_THUMBNAIL, cursor.getString(cursor.getColumnIndexOrThrow(Courses.COLUMN_NAME_THUMBNAIL)));
 
             queryResult.add(course);
         }

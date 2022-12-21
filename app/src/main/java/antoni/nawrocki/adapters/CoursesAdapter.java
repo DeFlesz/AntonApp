@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
+import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.fragments.CourseView;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
@@ -48,6 +50,10 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         holder.title.setText(courses.get(position).get(Courses.COLUMN_NAME_TITLE));
         holder.description.setText(courses.get(position).get(Courses.COLUMN_NAME_DESCRIPTION));
         holder.price.setText(courses.get(position).get(Courses.COLUMN_NAME_PRICE) + " PLN");
+        String thumbnail = courses.get(position).get(Courses.COLUMN_NAME_THUMBNAIL);
+        if (thumbnail != null && !Objects.equals(thumbnail, "") && !Objects.equals(thumbnail, "STRING_TOO_LARGE")){
+            Base64Converter.decodeBase64StringAndSetImage(thumbnail, holder.thumbnail);
+        }
 
         holder.itemView.setOnClickListener(v -> {
 //            Toast.makeText(v.getContext(), string, Toast.LENGTH_SHORT).show();

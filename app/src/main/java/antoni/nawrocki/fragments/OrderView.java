@@ -35,6 +35,7 @@ import java.util.Objects;
 import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.OrderOptionsAdapter;
+import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.db.DBReaderContract;
 
@@ -83,6 +84,7 @@ public class OrderView extends Fragment {
         titleTextView = view.findViewById(R.id.order_view_title);
         descriptionTextView = view.findViewById(R.id.order_view_description);
         orderPriceTextView = view.findViewById(R.id.order_price);
+        thumbnail = view.findViewById(R.id.order_view_thumbnail);
 
         DBHelper dbHelper = new DBHelper(getContext());
 
@@ -90,6 +92,12 @@ public class OrderView extends Fragment {
         titleTextView.setText(courseData.get(CoursesOptions.COLUMN_NAME_TITLE));
         descriptionTextView.setText(courseData.get(CoursesOptions.COLUMN_NAME_DESCRIPTION));
         orderPriceTextView.setText(price);
+
+        String imageData = courseData.get(Courses.COLUMN_NAME_THUMBNAIL);
+
+        if (imageData != null && (!Objects.equals(thumbnail, "") || !Objects.equals(thumbnail, "STRING_TOO_LARGE"))) {
+            Base64Converter.decodeBase64StringAndSetImage(imageData, thumbnail);
+        }
 
         recyclerView = view.findViewById(R.id.order_options_recycler_view);
 

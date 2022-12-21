@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/order_view_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher_background"
         android:scaleType="centerCrop"
         />

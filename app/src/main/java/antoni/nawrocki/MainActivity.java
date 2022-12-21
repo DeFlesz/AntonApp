@@ -1,14 +1,6 @@
 package antoni.nawrocki;
 
-import static antoni.nawrocki.db.DBReaderContract.*;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainer;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import static antoni.nawrocki.db.DBReaderContract.Courses;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,21 +8,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import java.sql.Date;
-import java.sql.Time;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import antoni.nawrocki.db.DBHelper;
-import antoni.nawrocki.db.DBReaderContract;
-import antoni.nawrocki.fragments.CourseList;
 import antoni.nawrocki.fragments.CourseView;
 import antoni.nawrocki.fragments.Credits;
 import antoni.nawrocki.fragments.ProfileView;
 import antoni.nawrocki.fragments.SignUp;
 import antoni.nawrocki.models.CourseModel;
 import antoni.nawrocki.models.CourseOption;
-import antoni.nawrocki.models.OrderModel;
 import antoni.nawrocki.models.UserModel;
 
 /*
@@ -212,11 +203,15 @@ public class MainActivity extends AppCompatActivity {
                         ""
                 )
         );
+
+//        getResources().dr
+//        drawable.get
+
         dbHelper.createCourse(
                 new CourseModel(
                         "Jak opowiedzieć żart",
                         "W tym kursie zaprezentuje jak opowiadać żarty",
-                        "",
+                        getString(R.string.jokes_img),
                         1,
                         40
                 ),
@@ -238,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 new CourseModel(
                         "Kurs Vue z [Redacted]",
                         "W tym kursie zaprezentuje podstawy vue",
-                        "",
+                        getString(R.string.vue_img),
                         1,
                         40
                 ),
@@ -265,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                 new CourseModel(
                         "Javunia z kawunią",
                         "Lubisz kawę? To na pewno polubisz, też jave!",
-                        "",
+                        getString(R.string.java_img),
                         1,
                         120
                 ),
