@@ -7,7 +7,6 @@
     >
 
     <TextView
-        android:textColor="@color/black"
         android:layout_margin="16dp"
         android:textSize="32sp"
         android:layout_centerInParent="true"

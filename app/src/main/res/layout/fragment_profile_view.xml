@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.ProfileView">
+    tools:context=".fragments.ProfileView"
+    android:background="?colorSurface"
+    >
 
     <RelativeLayout
         android:id="@+id/profile_header"
         android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DAD9D9"
+        android:background="?colorSurfaceVariant"
         >
 
         <ImageButton
@@ -51,7 +53,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name Surname"
-        android:textColor="@color/black"
         />
 
     </RelativeLayout>
@@ -60,7 +61,8 @@
         android:padding="16dp"
         android:layout_below="@id/profile_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/profile_recycler_view"

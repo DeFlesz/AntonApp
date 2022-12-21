@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Credits">
 
-    <ImageButton
-        android:id="@+id/credits_back_button"
-        android:layout_margin="8dp"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@drawable/back_gray"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        />
-
     <LinearLayout
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
@@ -29,7 +19,6 @@
 
         <TextView
             android:textSize="32sp"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Antoni Nawrocki"
@@ -43,7 +32,6 @@
 
         <TextView
             android:textSize="32sp"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4PP"/>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import android.widget.ImageButton;
 import antoni.nawrocki.R;
 
 public class Credits extends Fragment {
-    ImageButton backButton;
 
     public Credits() {
         // Required empty public constructor
@@ -37,11 +37,18 @@ public class Credits extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
 
-        backButton = view.findViewById(R.id.credits_back_button);
 
-        backButton.setOnClickListener(v -> {
-            requireActivity().onBackPressed();
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

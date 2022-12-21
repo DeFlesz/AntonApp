@@ -149,6 +149,6 @@ public class CourseView extends Fragment {
         editor.putString("current_course", courseID);
         editor.apply();
 
-        ((AppCompatActivity)requireActivity()).getSupportActionBar().hide();
+//        ((AppCompatActivity)requireActivity()).getSupportActionBar().hide();
     }
 }

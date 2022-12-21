@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.CourseView"
-    android:background="#D6D6D6"
+    style="?colorPrimaryContainer"
     >
 
     <RelativeLayout
@@ -45,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="32sp"
-            android:textColor="@color/black"
             android:text="Tytuł kursu" />
 
         <TextView
@@ -53,7 +52,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="@color/black"
             android:text="Bardzo długi i wyczerpujący opis, na który składa się wiele paragrafów oraz innych tego typu..." />
 
     </LinearLayout>
@@ -66,7 +64,6 @@
         android:layout_below="@+id/linear_layout_course_view"
         android:layout_alignStart="@id/linear_layout_course_view"
         android:gravity="center_vertical"
-        android:textColor="@color/black"
         android:textSize="18sp"
         android:text="kwota" />
 
@@ -81,7 +78,6 @@
         android:layout_toLeftOf="@id/course_view_price_header"
         android:layout_toEndOf="@+id/course_view_price"
         android:gravity="center_vertical"
-        android:textColor="@color/black"
         android:textSize="18sp"
         android:text="@string/currency" />
 

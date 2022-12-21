@@ -92,12 +92,12 @@ public class SignUp extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)requireActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity)requireActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

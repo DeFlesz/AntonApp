@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         }
 //        Toast.makeText(this, login + " " + password, Toast.LENGTH_SHORT).show();
 
+//        getSupportActionBar().setHomeButtonEnabled(true);
 
         setUpDB();
     }
@@ -113,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
                         .addToBackStack(null)
                         .setReorderingAllowed(true)
                         .commit();
+                break;
+
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
 
