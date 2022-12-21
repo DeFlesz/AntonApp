@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import antoni.nawrocki.R;
+import antoni.nawrocki.models.CourseOption;
 
 public class CourseOptionsAdapter extends RecyclerView.Adapter<CourseOptionsAdapter.ViewHolder> {
-    private ArrayList<HashMap<String, String>> options;
+    private ArrayList<CourseOption> options;
     private ArrayList<String> selectedOptionIDs = new ArrayList<>();
     private double finalPrice;
     private TextView priceField;
@@ -30,7 +31,7 @@ public class CourseOptionsAdapter extends RecyclerView.Adapter<CourseOptionsAdap
         return finalPrice;
     }
 
-    public CourseOptionsAdapter(ArrayList<HashMap<String, String>> options, TextView textView, double basePrice) {
+    public CourseOptionsAdapter(ArrayList<CourseOption> options, TextView textView, double basePrice) {
         this.options = options;
         this.finalPrice = basePrice;
         this.priceField = textView;
@@ -46,17 +47,17 @@ public class CourseOptionsAdapter extends RecyclerView.Adapter<CourseOptionsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.title.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_TITLE));
-        holder.description.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_DESCRIPTION));
-        holder.price.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_PRICE) + " PLN");
+        holder.title.setText(options.get(position).getTitle());
+        holder.description.setText(options.get(position).getDescription());
+        holder.price.setText((int) options.get(position).getPrice() + " PLN");
 
         holder.itemView.setOnClickListener(v -> {
             holder.optionButton.performClick();
         });
 
         holder.optionButton.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            String optionID = options.get(position).get(CoursesOptions._ID);
-            double price = Double.parseDouble(options.get(position).get(CoursesOptions.COLUMN_NAME_PRICE));
+            String optionID = options.get(position).getId();
+            double price = options.get(position).getPrice();
             if (isChecked) {
                 selectedOptionIDs.add(optionID);
                 finalPrice += price;

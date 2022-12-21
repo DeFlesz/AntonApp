@@ -15,11 +15,12 @@ import java.util.HashMap;
 
 import antoni.nawrocki.R;
 import antoni.nawrocki.db.DBReaderContract;
+import antoni.nawrocki.models.CourseOption;
 
 public class OrderOptionsAdapter extends RecyclerView.Adapter<OrderOptionsAdapter.ViewHolder> {
-    private ArrayList<HashMap<String, String>> options = new ArrayList<>();
+    private ArrayList<CourseOption> options = new ArrayList<>();
 
-    public OrderOptionsAdapter(ArrayList<HashMap<String, String>> options){
+    public OrderOptionsAdapter(ArrayList<CourseOption> options){
         this.options = options;
     }
 
@@ -33,8 +34,8 @@ public class OrderOptionsAdapter extends RecyclerView.Adapter<OrderOptionsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull OrderOptionsAdapter.ViewHolder holder, int position) {
-        holder.title.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_TITLE));
-        holder.description.setText(options.get(position).get(CoursesOptions.COLUMN_NAME_DESCRIPTION));
+        holder.title.setText(options.get(position).getTitle());
+        holder.description.setText(options.get(position).getDescription());
     }
 
     @Override

@@ -200,12 +200,12 @@ public class MainActivity extends AppCompatActivity {
         );
         dbHelper.createUser(
                 new UserModel(
-                        "Super Firma Gruz",
-                        "gruz",
+                        "What's the dog doin'?",
+                        "dog",
                         "1234",
                         false,
-                        true,
-                        ""
+                        false,
+                        getString(R.string.jokes_img)
                 )
         );
 

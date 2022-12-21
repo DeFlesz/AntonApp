@@ -38,6 +38,7 @@ import antoni.nawrocki.adapters.OrderOptionsAdapter;
 import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.db.DBReaderContract;
+import antoni.nawrocki.models.CourseOption;
 
 
 public class OrderView extends Fragment {
@@ -62,7 +63,7 @@ public class OrderView extends Fragment {
     private String orderID;
     private String price;
 
-    ArrayList<HashMap<String, String>> options;
+    ArrayList<CourseOption> options;
 
     public OrderView() {
         // Required empty public constructor
@@ -176,9 +177,9 @@ public class OrderView extends Fragment {
     public String getMessage() {
         String option = "";
 
-        for (HashMap<String, String> map:
+        for (CourseOption map:
                 options) {
-            option += "\n- " + map.get(CoursesOptions.COLUMN_NAME_TITLE);
+            option += "\n- " + map.getTitle();
         }
 
         String text = ""

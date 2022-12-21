@@ -30,6 +30,7 @@ import antoni.nawrocki.adapters.OrdersAdapter;
 import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.db.DBReaderContract;
+import antoni.nawrocki.models.UserModel;
 
 
 public class ProfileView extends Fragment {
@@ -73,11 +74,11 @@ public class ProfileView extends Fragment {
 
 
         DBHelper dbHelper = new DBHelper(getContext());
-        HashMap<String, String> userData = dbHelper.getUser(
+        UserModel userData = dbHelper.getUser(
                 ((MainActivity) requireActivity()).login);
 
         if (userData != null) {
-            String username = userData.get(Users.COLUMN_NAME_USERNAME);
+            String username = userData.getUsername();
             long userID = dbHelper.getUserID();
             nameTextView.setText(username);
 
@@ -89,7 +90,7 @@ public class ProfileView extends Fragment {
 
                 recyclerView.setAdapter(ordersAdapter);
             }
-            String pic = userData.get(Users.COLUMN_NAME_PROFILE_PICTURE);
+            String pic = userData.getProfilePicture();
 
             if (pic != null && (!Objects.equals(pic, "") || !Objects.equals(pic, "STRING_TOO_LARGE"))) {
 //                Log.i("AN", "base64: " + pic);

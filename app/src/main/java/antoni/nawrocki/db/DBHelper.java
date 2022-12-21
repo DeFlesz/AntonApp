@@ -59,6 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
         UserModel newUser = new UserModel(
+                null,
                 username,
                 login,
                 password,
@@ -93,13 +94,13 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
 
-        HashMap<String, String> userData = getUser(login);
+        UserModel userModel = getUser(login);
 
-        if (userData == null) {
+        if (userModel == null) {
             return false;
         }
 
-        String password2 = userData.get(Users.COLUMN_NAME_PASSWORD);
+        String password2 = userModel.getPassword();
 
         if (password2 == null) {
             return false;
@@ -113,16 +114,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public HashMap<String, String> getUser(String login) {
+    public UserModel getUser(String login) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        HashMap<String, String> userData = new HashMap<>();
-
         String[] projection = {
+                Users.COLUMN_NAME_USERNAME,
                 Users.COLUMN_NAME_LOGIN,
                 Users.COLUMN_NAME_PASSWORD,
-                Users.COLUMN_NAME_USERNAME,
                 Users._ID,
+                Users.COLUMN_NAME_IS_ADMIN,
                 Users.COLUMN_NAME_IS_COMPANY,
                 Users.COLUMN_NAME_PROFILE_PICTURE
         };
@@ -142,16 +142,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // hopefully that will fix cursor 0 size data exception :)
         if (cursor != null && cursor.moveToFirst()) {
-            userData.put(Users.COLUMN_NAME_LOGIN, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_LOGIN)));
-            userData.put(Users.COLUMN_NAME_PASSWORD, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PASSWORD)));
-            userData.put(Users.COLUMN_NAME_USERNAME, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_USERNAME)));
-            userData.put(Users._ID, cursor.getString(cursor.getColumnIndexOrThrow(Users._ID)));
-            userData.put(Users.COLUMN_NAME_IS_COMPANY, cursor.getString(cursor.getColumnIndexOrThrow(Users._ID)));
-            userData.put(Users.COLUMN_NAME_PROFILE_PICTURE, cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PROFILE_PICTURE)));
+            UserModel userModel = new UserModel(
+                    cursor.getString(cursor.getColumnIndexOrThrow(Users._ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_USERNAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_LOGIN)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PASSWORD)),
+                    Boolean.parseBoolean(cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_IS_ADMIN))),
+                    Boolean.parseBoolean(cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_IS_COMPANY))),
+                    cursor.getString(cursor.getColumnIndexOrThrow(Users.COLUMN_NAME_PROFILE_PICTURE))
+            );
 
             cursor.close();
 
-            return userData;
+            return userModel;
         }
 //        Log.e("AN", "DZIAŁA2");
 
@@ -203,7 +206,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<HashMap<String, String>> getOptions(long courseID) {
+    public ArrayList<CourseOption> getOptions(long courseID) {
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = new String[] {
                 CoursesOptions._ID,
@@ -228,18 +231,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 sortOrder
         );
 
-        ArrayList<HashMap<String, String>> options = new ArrayList<>();
+        ArrayList<CourseOption> options = new ArrayList<>();
 
         while (cursor.moveToNext()){
-            HashMap<String, String> course = new HashMap<>();
-
-            course.put(CoursesOptions._ID, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions._ID)));
-            course.put(CoursesOptions.COLUMN_NAME_TITLE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE)));
-            course.put(CoursesOptions.COLUMN_NAME_DESCRIPTION, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION)));
-            course.put(CoursesOptions.COLUMN_NAME_PRICE, cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_PRICE)));
+            CourseOption course = new CourseOption(
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions._ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION)),
+                    Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_PRICE)))
+            );
 
             options.add(course);
         }
+
+        cursor.close();
 
         return options;
     }
@@ -404,13 +409,13 @@ public class DBHelper extends SQLiteOpenHelper {
             return -1;
         }
 
-        HashMap<String, String> userData = getUser(login);
+        UserModel userData = getUser(login);
 
-        if (userData == null || userData.get(Users._ID) == null) {
+        if (userData == null || userData.getId() == null) {
             return -1;
         }
 
-        return Long.parseLong(userData.get(Users._ID));
+        return Long.parseLong(userData.getId());
     }
 
     public ArrayList<Long> getOptionIDs(long orderID) {
@@ -444,14 +449,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return queryResult;
     }
 
-    public HashMap<String, String> getOptionData(long optionID) {
+    public CourseOption getOptionData(long optionID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        HashMap<String, String> optionData = new HashMap<>();
 
         String[] projection = {
+                CoursesOptions._ID,
                 CoursesOptions.COLUMN_NAME_TITLE,
                 CoursesOptions.COLUMN_NAME_DESCRIPTION,
-                CoursesOptions._ID
+                CoursesOptions.COLUMN_NAME_PRICE
         };
 
         String selection = CoursesOptions._ID + " = ?";
@@ -467,18 +472,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 null
         );
 
-        while (cursor.moveToNext()){
-            optionData.put(
-                    CoursesOptions.COLUMN_NAME_TITLE,
-                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE))
+        if (cursor != null && cursor.moveToFirst()) {
+            CourseOption courseOption = new CourseOption(
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions._ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_TITLE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION)),
+                    Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_PRICE)))
             );
-            optionData.put(
-                    CoursesOptions.COLUMN_NAME_DESCRIPTION,
-                    cursor.getString(cursor.getColumnIndexOrThrow(CoursesOptions.COLUMN_NAME_DESCRIPTION))
-            );
+
+            cursor.close();
+
+            return courseOption;
         }
 
-        return optionData;
+        return null;
     }
 
     public ArrayList<HashMap<String, String>> getOrders(long userID) {

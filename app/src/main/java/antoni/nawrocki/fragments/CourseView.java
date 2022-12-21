@@ -30,6 +30,7 @@ import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.CourseOptionsAdapter;
 import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.db.DBHelper;
+import antoni.nawrocki.models.CourseOption;
 import antoni.nawrocki.models.OrderModel;
 
 public class CourseView extends Fragment {
@@ -70,7 +71,7 @@ public class CourseView extends Fragment {
         thumbnail = view.findViewById(R.id.course_view_thumbnail);
 
         HashMap<String, String> courseData = new DBHelper(getContext()).getCourse(Long.parseLong(courseID));
-        ArrayList<HashMap<String, String>> options = new DBHelper(getContext()).getOptions(Long.parseLong(courseID));
+        ArrayList<CourseOption> options = new DBHelper(getContext()).getOptions(Long.parseLong(courseID));
 
         String imageData = courseData.get(Courses.COLUMN_NAME_THUMBNAIL);
 
