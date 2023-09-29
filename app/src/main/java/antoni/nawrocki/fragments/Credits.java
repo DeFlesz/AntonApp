@@ -15,6 +15,9 @@ import android.widget.ImageButton;
 
 import antoni.nawrocki.R;
 
+/**
+ * Fragment displaying application credits
+ */
 public class Credits extends Fragment {
 
     public Credits() {

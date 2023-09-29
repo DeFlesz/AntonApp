@@ -40,7 +40,9 @@ import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.db.DBReaderContract;
 import antoni.nawrocki.models.CourseOption;
 
-
+/**
+ * Fragment for displaying the order
+ */
 public class OrderView extends Fragment {
     TextView titleTextView;
     TextView descriptionTextView;

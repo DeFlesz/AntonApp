@@ -2,10 +2,18 @@ package antoni.nawrocki.db;
 
 import android.provider.BaseColumns;
 
+/**
+ * purely static class used to contain DB schema
+ */
 public final class DBReaderContract {
-    // Private constructor not to initialize this class by accident :)
+    /**
+     * Private constructor not to initialize this class by accident :)
+     */
     private DBReaderContract() {}
 
+    /**
+     * Table containing Courses
+     */
     public static class Courses implements BaseColumns {
         public static final String TABLE_NAME = "courses";
         public static final String COLUMN_NAME_TITLE = "title";
@@ -15,6 +23,9 @@ public final class DBReaderContract {
         public static final String COLUMN_NAME_PRICE = "price";
     }
 
+    /**
+     * Table containing CoursesOptions
+     */
     public static class CoursesOptions implements BaseColumns {
         public static final String TABLE_NAME = "options";
         public static final String COLUMN_NAME_COURSE_ID = "course_id";
@@ -23,6 +34,9 @@ public final class DBReaderContract {
         public static final String COLUMN_NAME_PRICE = "price";
     }
 
+    /**
+     * Table containing Users
+     */
     public static class Users implements BaseColumns {
         public static final String TABLE_NAME = "users";
         public static final String COLUMN_NAME_USERNAME = "username";
@@ -33,6 +47,9 @@ public final class DBReaderContract {
         public static final String COLUMN_NAME_PROFILE_PICTURE = "profile_picture";
     }
 
+    /**
+     * Table containing Orders
+     */
     public static class Orders implements BaseColumns {
         public static final String TABLE_NAME = "orders";
         public static final String COLUMN_NAME_AMOUNT = "amount";
@@ -45,6 +62,9 @@ public final class DBReaderContract {
     // As I don't want any duplicates in Options just to save them occasionally for the orders,
     // I decided to make another table to store every option selected for any given order.
     // It is later linked inside "orders" table.
+    /**
+     * Table containing OrderOptions
+     */
     public static class OrdersOptions implements BaseColumns {
         public static final String TABLE_NAME = "orders_options";
         public static final String COLUMN_NAME_ORDER_ID = "order_id";
@@ -53,6 +73,9 @@ public final class DBReaderContract {
 
     // All the boiler plate for creating tables, Helper class already manages the process
     // of creating new database.
+    /**
+     * Query creating courses table
+     */
     public static final String CREATE_TABLE_COURSES =
             "CREATE TABLE " + Courses.TABLE_NAME + " (" +
                     Courses._ID + " INTEGER PRIMARY KEY," +
@@ -63,6 +86,9 @@ public final class DBReaderContract {
                     Courses.COLUMN_NAME_PRICE + " REAL);";
 
 
+    /**
+     * Query creating orders table
+     */
     public static final String CREATE_TABLE_ORDERS =
             "CREATE TABLE " + Orders.TABLE_NAME + " (" +
                 Orders._ID + " INTEGER PRIMARY KEY," +
@@ -72,6 +98,9 @@ public final class DBReaderContract {
                 Orders.COLUMN_NAME_USER_ID + " INTEGER," +
                 Orders.COLUMN_NAME_COURSE_ID + " INTEGER);";
 
+    /**
+     * Query creating courses options table
+     */
     public static final String CREATE_TABLE_COURSES_OPTIONS =
             "CREATE TABLE " + CoursesOptions.TABLE_NAME + " (" +
                 CoursesOptions._ID + " INTEGER PRIMARY KEY," +
@@ -80,11 +109,17 @@ public final class DBReaderContract {
                 CoursesOptions.COLUMN_NAME_DESCRIPTION + " TEXT," +
                 CoursesOptions.COLUMN_NAME_PRICE + " REAL);";
 
+    /**
+     * Query creating orders options table
+     */
     public static final String CREATE_TABLE_ORDERS_OPTIONS =
             "CREATE TABLE " + OrdersOptions.TABLE_NAME + " (" +
                 OrdersOptions.COLUMN_NAME_ORDER_ID + " INTEGER," +
                 OrdersOptions.COLUMN_NAME_OPTION_ID + " INTEGER);";
 
+    /**
+     * Query creating users table
+     */
     public static final String CREATE_TABLE_USERS =
             "CREATE TABLE " + Users.TABLE_NAME + " (" +
                 Users._ID + " INTEGER PRIMARY KEY," +
@@ -97,6 +132,9 @@ public final class DBReaderContract {
 
 
     // Not necessary, but it will help with cleaning up... maybe
+    /**
+     * Query deleting table
+     */
     public static final String DELETE_TABLE =
             "DROP TABLE IF EXISTS ";
 }

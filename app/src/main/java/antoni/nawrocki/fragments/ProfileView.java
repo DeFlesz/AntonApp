@@ -32,7 +32,9 @@ import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.db.DBReaderContract;
 import antoni.nawrocki.models.UserModel;
 
-
+/**
+ * Fragment displaying users profile
+ */
 public class ProfileView extends Fragment {
     ImageButton backButton;
     ImageButton logOutButton;

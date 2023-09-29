@@ -24,10 +24,18 @@ import antoni.nawrocki.R;
 import antoni.nawrocki.db.Base64Converter;
 import antoni.nawrocki.fragments.CourseView;
 
+/**
+ * Adapter for the Courses recycler view
+ */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
     private ArrayList<HashMap<String, String>> courses;
     private Context context;
 
+    /**
+     * Constructor for the adapter
+     * @param courses ArrayList of HashMaps containing courses references for db
+     * @param context lil dependency injection for context
+     */
     public CoursesAdapter(ArrayList<HashMap<String, String>> courses, Context context) {
         this.courses = courses;
         this.context = context;
@@ -86,6 +94,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         return courses.size();
     }
 
+    /**
+     * ViewHolder for Courses recycler view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView description;

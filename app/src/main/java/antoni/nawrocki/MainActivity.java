@@ -24,13 +24,11 @@ import antoni.nawrocki.models.CourseModel;
 import antoni.nawrocki.models.CourseOption;
 import antoni.nawrocki.models.UserModel;
 
-/*
-    TODO:
-     [x] share sms
-     [] share email
-     [] photos handling
+/**
+ * Main activity, base of the application
+ *
+ * @author Antoni Nawrocki
  */
-
 public class MainActivity extends AppCompatActivity {
     DBHelper dbHelper;
     FragmentContainerView fragmentContainerView;
@@ -38,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     public String login;
     public String password;
 
+    /**
+     * Overridden method, called on creation of the object
+     * @param savedInstanceState State from the saved instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
         setUpDB();
     }
 
-
+    /**
+     * Overridden method, called when an options item is selected
+     * @param item Menu item selected
+     * @return Returns whether an item was selected
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -124,6 +130,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Overridden method, called when the menu is created
+     * @param menu Menu class object
+     * @return Always returns true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -131,6 +142,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Overridden method, called when the options menu is prepared
+     * @param menu Menu class object
+     * @return Returns whether the menu was created
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         loadPrefs();
@@ -146,11 +162,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Overridden method, called when the back button is pressed
+     */
     @Override
     public void onBackPressed() {
         getSupportFragmentManager().popBackStack();
     }
 
+    /**
+     * Overridden method, called when the instance is restored
+     * @param savedInstanceState State saved
+     */
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         loadPrefs();
@@ -159,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    /**
+     * Loads preferences into memory
+     */
     public void loadPrefs() {
         SharedPreferences sharedPreferences = getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -173,6 +199,9 @@ public class MainActivity extends AppCompatActivity {
 //        super.onDestroy();
 //    }
 
+    /**
+     * Sets up the database
+     */
     public void setUpDB() {
         if (dbHelper.getCourses().size() != 0) {
             return;

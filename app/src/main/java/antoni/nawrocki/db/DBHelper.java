@@ -20,11 +20,18 @@ import antoni.nawrocki.models.CourseOption;
 import antoni.nawrocki.models.OrderModel;
 import antoni.nawrocki.models.UserModel;
 
+/**
+ * Class that allows supporting local database
+ */
 public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "AntonCerts.db";
     Context context;
 
+    /**
+     * Constructor setting up the context and options such as name and version
+     * @param context dependency injection context
+     */
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -54,6 +61,15 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVer, newVer);
     }
 
+    /**
+     * Registers user
+     * @param username
+     * @param login
+     * @param password
+     * @param isCompany
+     * @param profilePic
+     * @return Returns whether operation was successful
+     */
     public boolean registerUser(String username, String login, String password, boolean isCompany, String profilePic){
         if (getUser(login) != null) {
             return false;
@@ -72,6 +88,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     * Inserts registered user into database
+     * @param user
+     */
     public void createUser(
             UserModel user
     ) {
@@ -88,6 +108,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(Users.TABLE_NAME, null, values);
     }
 
+    /**
+     * Logins user into app
+     * @param login
+     * @param password1
+     * @return Return whether login was successful
+     */
     public boolean loginUser(String login, String password1){
         if (getUser(login) == null) {
 
@@ -114,6 +140,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     * Gets user data
+     * @param login
+     * @return UserModel
+     */
     public UserModel getUser(String login) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -162,6 +193,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //remove price it will be counted later
+
+    /**
+     * Inserts new order into database
+     * @param order OrderModel object
+     * @param userID
+     * @param courseID
+     * @param selectedOptionsIDs
+     */
     public void createOrder(OrderModel order, long userID, long courseID, long[] selectedOptionsIDs){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -183,6 +222,11 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Inserts new course into database
+     * @param courseModel
+     * @param courseOptions
+     */
     public void createCourse(CourseModel courseModel, CourseOption[] courseOptions) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -206,6 +250,11 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Reads all options from course
+     * @param courseID
+     * @return ArrayList of CourseOption
+     */
     public ArrayList<CourseOption> getOptions(long courseID) {
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = new String[] {
@@ -249,6 +298,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return options;
     }
 
+    /**
+     * Gets a specific Course by courseID
+     * @param courseID
+     * @return Course data
+     */
     public HashMap<String, String> getCourse(long courseID) {
         SQLiteDatabase db = this.getReadableDatabase();
         HashMap<String, String> courseData = new HashMap<>();
@@ -283,6 +337,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return courseData;
     }
 
+    /**
+     * Reads all courses
+     * @return ArrayList of Course data
+     */
     public ArrayList<HashMap<String, String>> getCourses() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
@@ -323,6 +381,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return queryResult;
     }
 
+    /**
+     * Reads all courses for given userID
+     * @param userID
+     * @return ArrayList of Course data specific to user
+     */
     public ArrayList<HashMap<String, String>> getCourses(long userID) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
@@ -394,12 +457,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return queryResult;
     }
 
+    /**
+     * Gets course name by courseID
+     * @param courseID
+     * @return Course name
+     */
     public String getCourseName(long courseID) {
         HashMap<String, String> courseData = getCourse(courseID);
 
         return courseData.get(Courses.COLUMN_NAME_TITLE);
     }
 
+    /**
+     * Gets UserID
+     * @return userID
+     */
     public long getUserID() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -418,6 +490,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return Long.parseLong(userData.getId());
     }
 
+    /**
+     * Gets all options IDs for specific order
+     * @param orderID
+     * @return ArrayList of options IDs
+     */
     public ArrayList<Long> getOptionIDs(long orderID) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Long> queryResult = new ArrayList<>();
@@ -449,6 +526,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return queryResult;
     }
 
+    /**
+     * Reads all data for given optionID
+     * @param optionID
+     * @return CourseOption model filled with option data
+     */
     public CourseOption getOptionData(long optionID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -488,6 +570,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    /**
+     * Read all orders for specific user
+     * @param userID
+     * @return ArrayList of orders data
+     */
     public ArrayList<HashMap<String, String>> getOrders(long userID) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<HashMap<String, String>> queryResult = new ArrayList<>();
@@ -537,13 +624,4 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return queryResult;
     }
-
-    // TODO
-    // create new course (course data)
-    // register (username, login, password1, password2)
-    // login (login, password)
-    // order (course, options, user, amount, current_date)
-    // get orders (username)
-    // get courses
-    // get courseOptions
 }

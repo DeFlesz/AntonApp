@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 
 import antoni.nawrocki.R;
 
-
+/**
+ * Fragment used to be displayed when there is no courses left to order
+ */
 public class NoCourses extends Fragment {
 
     public NoCourses() {

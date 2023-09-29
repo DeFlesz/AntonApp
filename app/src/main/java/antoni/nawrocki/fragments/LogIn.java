@@ -23,6 +23,9 @@ import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
 import antoni.nawrocki.db.DBHelper;
 
+/**
+ * Fragment displaying login screen
+ */
 public class LogIn extends Fragment {
     EditText loginInput;
     EditText passwordInput;

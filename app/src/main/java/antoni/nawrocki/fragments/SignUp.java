@@ -22,6 +22,9 @@ import java.util.Set;
 import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.FragmentViewPagerAdapter;
 
+/**
+ * Fragment containing both login and register fragments
+ */
 public class SignUp extends Fragment {
 
     public SignUp() {

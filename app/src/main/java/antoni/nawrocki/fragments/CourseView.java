@@ -33,6 +33,9 @@ import antoni.nawrocki.db.DBHelper;
 import antoni.nawrocki.models.CourseOption;
 import antoni.nawrocki.models.OrderModel;
 
+/**
+ * Fragment displaying course
+ */
 public class CourseView extends Fragment {
 
     ImageView thumbnail;

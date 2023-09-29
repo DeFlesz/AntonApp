@@ -24,6 +24,9 @@ import antoni.nawrocki.MainActivity;
 import antoni.nawrocki.R;
 import antoni.nawrocki.db.DBHelper;
 
+/**
+ * Fragment used to display register screen
+ */
 public class Register extends Fragment {
     EditText usernameInput;
     EditText loginInput;

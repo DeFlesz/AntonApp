@@ -1,5 +1,8 @@
 package antoni.nawrocki.models;
 
+/**
+ * Model to store user data, most methods are self-explanatory
+ */
 public class UserModel {
     private String id;
     private String username;

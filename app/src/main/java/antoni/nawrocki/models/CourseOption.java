@@ -1,5 +1,8 @@
 package antoni.nawrocki.models;
 
+/**
+ * Model to store course's option data, most methods are self-explanatory
+ */
 public class CourseOption {
     private String id;
     private String title;

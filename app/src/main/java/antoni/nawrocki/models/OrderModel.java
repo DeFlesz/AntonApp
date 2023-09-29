@@ -2,6 +2,9 @@ package antoni.nawrocki.models;
 
 import java.util.Date;
 
+/**
+ * Model to store order data, most methods are self-explanatory
+ */
 public class OrderModel {
     private int amount;
     private Date date;

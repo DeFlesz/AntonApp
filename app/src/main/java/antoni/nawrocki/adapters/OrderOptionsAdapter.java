@@ -17,9 +17,16 @@ import antoni.nawrocki.R;
 import antoni.nawrocki.db.DBReaderContract;
 import antoni.nawrocki.models.CourseOption;
 
+/**
+ * Adapter for OrderOptions
+ */
 public class OrderOptionsAdapter extends RecyclerView.Adapter<OrderOptionsAdapter.ViewHolder> {
     private ArrayList<CourseOption> options = new ArrayList<>();
 
+    /**
+     * Contructor for OrderOptions Adapter
+     * @param options ArrayList of CourseOption
+     */
     public OrderOptionsAdapter(ArrayList<CourseOption> options){
         this.options = options;
     }
@@ -43,6 +50,9 @@ public class OrderOptionsAdapter extends RecyclerView.Adapter<OrderOptionsAdapte
         return options.size();
     }
 
+    /**
+     * ViewHolder for OrderOptions recycler view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView description;

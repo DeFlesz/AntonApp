@@ -17,20 +17,37 @@ import java.util.HashMap;
 import antoni.nawrocki.R;
 import antoni.nawrocki.models.CourseOption;
 
+/**
+ * Adapter for the CourseOptions Recycler view
+ */
 public class CourseOptionsAdapter extends RecyclerView.Adapter<CourseOptionsAdapter.ViewHolder> {
     private ArrayList<CourseOption> options;
     private ArrayList<String> selectedOptionIDs = new ArrayList<>();
     private double finalPrice;
     private TextView priceField;
 
+    /**
+     * Finds the selected options
+     * @return ArrayList of selected options
+     */
     public ArrayList<String> getSelectedOptionIDs() {
         return selectedOptionIDs;
     }
 
+    /**
+     * Calculates the final price for the Course
+     * @return Final price for the course
+     */
     public double getFinalPrice() {
         return finalPrice;
     }
 
+    /**
+     * Contructor for the adapter
+     * @param options ArrayList of CourseOption containing all options for given course
+     * @param textView TextView containing the price
+     * @param basePrice Base price of the course
+     */
     public CourseOptionsAdapter(ArrayList<CourseOption> options, TextView textView, double basePrice) {
         this.options = options;
         this.finalPrice = basePrice;
@@ -75,6 +92,9 @@ public class CourseOptionsAdapter extends RecyclerView.Adapter<CourseOptionsAdap
         return options.size();
     }
 
+    /**
+     * ViewHolder for the CourseOption recycler view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView description;

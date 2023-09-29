@@ -1,5 +1,8 @@
 package antoni.nawrocki.models;
 
+/**
+ * Model to store course data, most methods are self-explanatory
+ */
 public class CourseModel {
     private String title;
     private String description;

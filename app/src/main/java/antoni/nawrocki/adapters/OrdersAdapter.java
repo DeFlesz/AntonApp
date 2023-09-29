@@ -23,10 +23,18 @@ import antoni.nawrocki.db.DBReaderContract;
 import antoni.nawrocki.fragments.CourseView;
 import antoni.nawrocki.fragments.OrderView;
 
+/**
+ * Adapter for Orders recycler view
+ */
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
     Context context;
     ArrayList<HashMap<String, String>> orders = new ArrayList<>();
 
+    /**
+     * Constructor for the adapter
+     * @param context lil dependency injection for some context
+     * @param orders ArrayList of Orders
+     */
     public OrdersAdapter(Context context, ArrayList<HashMap<String, String>> orders) {
         this.context = context;
         this.orders = orders;
@@ -83,6 +91,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         return orders.size();
     }
 
+    /**
+     * ViewHolder for Orders recycler view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView courseName;
         TextView orderDate;

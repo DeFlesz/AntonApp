@@ -28,7 +28,9 @@ import antoni.nawrocki.R;
 import antoni.nawrocki.adapters.CoursesAdapter;
 import antoni.nawrocki.db.DBHelper;
 
-
+/**
+ * Fragment displaying list of courses
+ */
 public class CourseList extends Fragment {
     RecyclerView recyclerView;
     FragmentContainerView fragmentContainerView;
